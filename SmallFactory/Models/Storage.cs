@@ -8,6 +8,9 @@ namespace SmallFactory.Models
         [Column("id")]
         public int Id { get; set; }
 
+        [Column("factory_id")]
+        public int FactoryId { get; set; }
+
         [Column("part_id")]
         public int PartId { get; set; }
 
@@ -16,5 +19,9 @@ namespace SmallFactory.Models
 
         [Column("max")]
         public int Max { get; set; }
+
+        public Factory Factory { get; set; }
+
+        public Part Part { get; set; }
     }
 }

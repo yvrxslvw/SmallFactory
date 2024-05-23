@@ -19,5 +19,7 @@ namespace SmallFactory.Models
 
         [Column("cooldown")]
         public int CoolDown { get; set; }
+
+        public Part Part { get; set; }
     }
 }

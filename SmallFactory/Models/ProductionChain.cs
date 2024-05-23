@@ -13,5 +13,9 @@ namespace SmallFactory.Models
 
         [Column("name")]
         public string Name { get; set; }
+
+        public Factory Factory { get; set; }
+
+        public List<Machine> Machines { get; set; } = [];
     }
 }

@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using SmallFactory.Data;
+
 namespace SmallFactory
 {
     public class Program
@@ -9,6 +12,14 @@ namespace SmallFactory
 
             if (string.IsNullOrWhiteSpace(connectionString))
                 throw new Exception("Не все поля в конфигурации приложения заполнены.");
+
+            builder.Services.AddDbContext<FactoriesContext>(options => options.UseNpgsql(connectionString));
+            builder.Services.AddDbContext<ProductionChainsContext>(options => options.UseNpgsql(connectionString));
+            builder.Services.AddDbContext<MachinesContext>(options => options.UseNpgsql(connectionString));
+            builder.Services.AddDbContext<ShopItemsContext>(options => options.UseNpgsql(connectionString));
+            builder.Services.AddDbContext<PartsContext>(options => options.UseNpgsql(connectionString));
+            builder.Services.AddDbContext<ReceiptsContext>(options => options.UseNpgsql(connectionString));
+            builder.Services.AddDbContext<StoragesContext>(options => options.UseNpgsql(connectionString));
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();

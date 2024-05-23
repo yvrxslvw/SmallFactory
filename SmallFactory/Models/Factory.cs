@@ -12,6 +12,10 @@ namespace SmallFactory.Models
         public string Name { get; set; }
 
         [Column("budget")]
-        public int Budget { get; set; }
+        public decimal Budget { get; set; }
+
+        public List<ProductionChain> ProductionChains { get; set; } = [];
+
+        public List<Storage> Storages { get; set; } = [];
     }
 }

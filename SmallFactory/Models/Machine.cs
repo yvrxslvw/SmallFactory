@@ -23,5 +23,9 @@ namespace SmallFactory.Models
 
         [Column("receipt_id")]
         public int ReceiptId { get; set; }
+
+        public ProductionChain ProductionChain { get; set; }
+
+        public Receipt Receipt { get; set; }
     }
 }
