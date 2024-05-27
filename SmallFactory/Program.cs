@@ -24,6 +24,7 @@ namespace SmallFactory
             builder.Services.AddDbContext<StoragesContext>(options => options.UseNpgsql(connectionString));
 
             builder.Services.AddScoped<IFactoriesRepository, FactoriesRepository>();
+            builder.Services.AddScoped<IProductionChainsRepository, ProductionChainsRepository>();
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();

@@ -81,7 +81,7 @@ namespace SmallFactory.Repositories
         {
             int result = await _factoriesContext.SaveChangesAsync();
             if (result == 0)
-                throw new ApiException(500, "Произошла непредвиденная ошибка... Пожалуйста, повторите попытку позже.");
+                throw new ApiUnexpectedException();
         }
     }
 }

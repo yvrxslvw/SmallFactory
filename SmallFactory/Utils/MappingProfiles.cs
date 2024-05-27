@@ -9,6 +9,8 @@ namespace SmallFactory.Utils
         public MappingProfiles()
         {
             CreateMap<Factory, FactoryDto>();
+
+            CreateMap<ProductionChain, ProductionChainDto>();
         }
     }
 }

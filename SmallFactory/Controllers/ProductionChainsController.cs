@@ -1,39 +1,87 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using SmallFactory.DTOs;
+using SmallFactory.Exceptions;
+using SmallFactory.Interfaces;
+using SmallFactory.Models;
 
 namespace SmallFactory.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductionChainsController : ControllerBase
+    public class ProductionChainsController(IProductionChainsRepository productionChainsRepository, IMapper mapper) : ControllerBase
     {
+        private readonly IProductionChainsRepository _productionChainsRepository = productionChainsRepository;
+        private readonly IMapper _mapper = mapper;
+
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok("get all production chains");
+            try
+            {
+                List<ProductionChain> productionChains = (await _productionChainsRepository.GetProductionChainsAsync()).ToList();
+                return Ok(_mapper.Map<List<ProductionChainDto>>(productionChains));
+            }
+            catch (ApiException exc)
+            {
+                return StatusCode(exc.Code, exc.Message);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            return Ok($"get {id} production chain");
+            try
+            {
+                ProductionChain productionChain = await _productionChainsRepository.GetProductionChainByIdAsync(id);
+                return Ok(_mapper.Map<ProductionChainDto>(productionChain));
+            }
+            catch (ApiException exc)
+            {
+                return StatusCode(exc.Code, exc.Message);
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post()
+        public async Task<IActionResult> Post([FromBody] CreateProductionChainDto createProductionChainDto)
         {
-            return Ok("create production chain");
+            try
+            {
+                ProductionChain productionChain = await _productionChainsRepository.CreateProductionChainAsync(createProductionChainDto);
+                return Ok(_mapper.Map<ProductionChainDto>(productionChain));
+            }
+            catch (ApiException exc)
+            {
+                return StatusCode(exc.Code, exc.Message);
+            }
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id)
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateProductionChainDto updateProductionChainDto)
         {
-            return Ok($"update {id} production chain");
+            try
+            {
+                ProductionChain productionChain = await _productionChainsRepository.UpdateProductionChainAsync(id, updateProductionChainDto);
+                return Ok(_mapper.Map<ProductionChainDto>(productionChain));
+            }
+            catch (ApiException exc)
+            {
+                return StatusCode(exc.Code, exc.Message);
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            return Ok($"delete {id} production chain");
+            try
+            {
+                await _productionChainsRepository.DeleteProductionChainAsync(id);
+                return Ok($"Производственная цепочка с ID: {id} успешно удалена.");
+            }
+            catch (ApiException exc)
+            {
+                return StatusCode(exc.Code, exc.Message);
+            }
         }
     }
 }
