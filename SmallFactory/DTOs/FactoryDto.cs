@@ -7,5 +7,7 @@
         public string Name { get; set; }
 
         public decimal Budget { get; set; }
+
+        public List<ProductionChainDto> ProductionChains { get; set; } = [];
     }
 }
