@@ -1,4 +1,5 @@
-﻿using SmallFactory.Models;
+﻿using SmallFactory.DTOs;
+using SmallFactory.Models;
 
 namespace SmallFactory.Interfaces
 {
@@ -6,8 +7,8 @@ namespace SmallFactory.Interfaces
     {
         public Task<IEnumerable<Factory>> GetFactoriesAsync();
         public Task<Factory> GetFactoryByIdAsync(int id);
-        public Task<Factory> CreateFactoryAsync();
-        public Task<Factory> UpdateFactoryAsync(int id);
+        public Task<Factory> CreateFactoryAsync(CreateFactoryDto createFactoryDto);
+        public Task<Factory> UpdateFactoryAsync(int id, UpdateFactoryDto updateFactoryDto);
         public Task DeleteFactoryAsync(int id);
     }
 }
