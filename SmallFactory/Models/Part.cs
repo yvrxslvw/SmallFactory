@@ -12,9 +12,5 @@ namespace SmallFactory.Models
         public string Name { get; set; }
 
         public ShopItem ShopItem { get; set; }
-
-        public List<Receipt> Receipts { get; set; } = [];
-
-        public List<Storage> Storages { get; set; } = [];
     }
 }

@@ -31,8 +31,6 @@ namespace SmallFactory.Models
         [Comment("Per minute")]
         public double ProductionRate { get; set; }
 
-        public List<Machine> Machines { get; set; } = [];
-
         public Part ManufacturedPart { get; set; }
 
         public Part Material1Part { get; set; }

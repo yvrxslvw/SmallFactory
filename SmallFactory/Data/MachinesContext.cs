@@ -11,7 +11,7 @@ namespace SmallFactory.Data
         {
             modelBuilder.Entity<Machine>()
                 .HasOne(m => m.Receipt)
-                .WithMany(r => r.Machines)
+                .WithMany()
                 .HasForeignKey(m => m.ReceiptId);
         }
     }

@@ -16,7 +16,7 @@ namespace SmallFactory.Data
 
             modelBuilder.Entity<Storage>()
                 .HasOne(s => s.Part)
-                .WithMany(p => p.Storages)
+                .WithMany()
                 .HasForeignKey(s => s.PartId);
         }
     }
