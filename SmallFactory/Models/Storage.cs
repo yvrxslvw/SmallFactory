@@ -2,7 +2,7 @@
 
 namespace SmallFactory.Models
 {
-    [Table("storage")]
+    [Table("storages")]
     public class Storage
     {
         [Column("id")]

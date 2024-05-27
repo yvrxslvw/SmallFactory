@@ -24,8 +24,13 @@ namespace SmallFactory.Models
         [Column("receipt_id")]
         public int ReceiptId { get; set; }
 
+        [Column("storage_id")]
+        public int StorageId { get; set; }
+
         public ProductionChain ProductionChain { get; set; }
 
         public Receipt Receipt { get; set; }
+
+        public Storage Storage { get; set; }
     }
 }

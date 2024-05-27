@@ -13,6 +13,11 @@ namespace SmallFactory.Data
                 .HasOne(m => m.Receipt)
                 .WithMany()
                 .HasForeignKey(m => m.ReceiptId);
+
+            modelBuilder.Entity<Machine>()
+                .HasOne(m => m.Storage)
+                .WithMany()
+                .HasForeignKey(m => m.StorageId);
         }
     }
 }

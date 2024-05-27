@@ -61,6 +61,10 @@ namespace SmallFactory.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("receipt_id");
 
+                    b.Property<int>("StorageId")
+                        .HasColumnType("integer")
+                        .HasColumnName("storage_id");
+
                     b.Property<int>("Type")
                         .HasColumnType("integer")
                         .HasColumnName("type");
@@ -70,6 +74,8 @@ namespace SmallFactory.Migrations
                     b.HasIndex("ProductionChainId");
 
                     b.HasIndex("ReceiptId");
+
+                    b.HasIndex("StorageId");
 
                     b.ToTable("machines");
                 });
@@ -235,7 +241,7 @@ namespace SmallFactory.Migrations
 
                     b.HasIndex("PartId");
 
-                    b.ToTable("storage");
+                    b.ToTable("storages");
                 });
 
             modelBuilder.Entity("SmallFactory.Models.Machine", b =>
@@ -252,9 +258,17 @@ namespace SmallFactory.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SmallFactory.Models.Storage", "Storage")
+                        .WithMany()
+                        .HasForeignKey("StorageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ProductionChain");
 
                     b.Navigation("Receipt");
+
+                    b.Navigation("Storage");
                 });
 
             modelBuilder.Entity("SmallFactory.Models.ProductionChain", b =>
