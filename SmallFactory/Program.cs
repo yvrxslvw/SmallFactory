@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SmallFactory.Data;
+using SmallFactory.Interfaces;
+using SmallFactory.Repositories;
 
 namespace SmallFactory
 {
@@ -20,6 +22,8 @@ namespace SmallFactory
             builder.Services.AddDbContext<PartsContext>(options => options.UseNpgsql(connectionString));
             builder.Services.AddDbContext<ReceiptsContext>(options => options.UseNpgsql(connectionString));
             builder.Services.AddDbContext<StoragesContext>(options => options.UseNpgsql(connectionString));
+
+            builder.Services.AddScoped<IFactoriesRepository, FactoriesRepository>();
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
