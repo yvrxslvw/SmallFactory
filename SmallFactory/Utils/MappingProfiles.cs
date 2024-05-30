@@ -11,6 +11,8 @@ namespace SmallFactory.Utils
             CreateMap<Factory, FactoryDto>();
 
             CreateMap<ProductionChain, ProductionChainDto>();
+
+            CreateMap<Machine, MachineDto>();
         }
     }
 }

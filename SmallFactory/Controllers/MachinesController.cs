@@ -1,39 +1,87 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using SmallFactory.DTOs;
+using SmallFactory.Exceptions;
+using SmallFactory.Interfaces;
+using SmallFactory.Models;
 
 namespace SmallFactory.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MachinesController : ControllerBase
+    public class MachinesController(IMachinesRepository machinesRepository, IMapper mapper) : ControllerBase
     {
+        private readonly IMachinesRepository _machinesRepository = machinesRepository;
+        private readonly IMapper _mapper = mapper;
+
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok("get all machines");
+            try
+            {
+                List<Machine> machines = await _machinesRepository.GetMachinesAsync();
+                return Ok(_mapper.Map<List<MachineDto>>(machines));
+            }
+            catch (ApiException exc)
+            {
+                return StatusCode(exc.Code, exc.Message);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            return Ok($"get {id} machine");
+            try
+            {
+                Machine machine = await _machinesRepository.GetMachineByIdAsync(id);
+                return Ok(_mapper.Map<MachineDto>(machine));
+            }
+            catch (ApiException exc)
+            {
+                return StatusCode(exc.Code, exc.Message);
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post()
+        public async Task<IActionResult> Post([FromBody] CreateMachineDto createMachineDto)
         {
-            return Ok("create machine");
+            try
+            {
+                Machine machine = await _machinesRepository.CreateMachineAsync(createMachineDto);
+                return Ok(_mapper.Map<MachineDto>(machine));
+            }
+            catch (ApiException exc)
+            {
+                return StatusCode(exc.Code, exc.Message);
+            }
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id)
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateMachineDto updateMachineDto)
         {
-            return Ok($"update {id} machine");
+            try
+            {
+                Machine machine = await _machinesRepository.UpdateMachineAsync(id, updateMachineDto);
+                return Ok(_mapper.Map<MachineDto>(machine));
+            }
+            catch (ApiException exc)
+            {
+                return StatusCode(exc.Code, exc.Message);
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            return Ok($"delete {id} machine");
+            try
+            {
+                await _machinesRepository.DeleteMachineAsync(id);
+                return Ok($"Станок с ID: {id} успешно удалён.");
+            }
+            catch (ApiException exc)
+            {
+                return StatusCode(exc.Code, exc.Message);
+            }
         }
     }
 }

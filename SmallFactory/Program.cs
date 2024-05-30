@@ -25,6 +25,7 @@ namespace SmallFactory
 
             builder.Services.AddScoped<IFactoriesRepository, FactoriesRepository>();
             builder.Services.AddScoped<IProductionChainsRepository, ProductionChainsRepository>();
+            builder.Services.AddScoped<IMachinesRepository, MachinesRepository>();
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
