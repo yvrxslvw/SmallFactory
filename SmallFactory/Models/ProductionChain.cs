@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmallFactory.Models
 {
     [Table("production_chains")]
+    [Index(nameof(Name), IsUnique = true)]
     public class ProductionChain
     {
         [Column("id")]
