@@ -19,7 +19,7 @@ namespace SmallFactory.Controllers
         {
             try
             {
-                List<Machine> machines = await _machinesRepository.GetMachinesAsync();
+                List<Machine> machines = (await _machinesRepository.GetMachinesAsync()).ToList();
                 return Ok(_mapper.Map<List<MachineDto>>(machines));
             }
             catch (ApiException exc)

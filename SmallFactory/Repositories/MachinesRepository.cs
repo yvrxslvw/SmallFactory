@@ -49,7 +49,7 @@ namespace SmallFactory.Repositories
             return machine;
         }
 
-        public async Task<List<Machine>> GetMachinesAsync()
+        public async Task<IEnumerable<Machine>> GetMachinesAsync()
         {
             List<Machine> machines = await _machinesContext.Machines
                 .OrderBy(m => m.Id)
