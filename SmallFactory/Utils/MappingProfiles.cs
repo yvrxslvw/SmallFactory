@@ -15,6 +15,8 @@ namespace SmallFactory.Utils
             CreateMap<Machine, MachineDto>();
 
             CreateMap<Receipt, ReceiptDto>();
+
+            CreateMap<Part, PartDto>();
         }
     }
 }
