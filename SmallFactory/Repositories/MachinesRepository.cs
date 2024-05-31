@@ -23,8 +23,7 @@ namespace SmallFactory.Repositories
             {
                 ProductionChainId = createMachineDto.ProductionChainId,
                 Type = (MachineTypes)createMachineDto.Type,
-                ReceiptId = createMachineDto.ReceiptId,
-                StorageId = -1, // to delete
+                ReceiptId = createMachineDto.ReceiptId
             };
             _machinesContext.Machines.Add(machine);
             await Save();

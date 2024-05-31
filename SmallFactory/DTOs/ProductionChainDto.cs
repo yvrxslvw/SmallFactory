@@ -1,6 +1,4 @@
-﻿using SmallFactory.Models;
-
-namespace SmallFactory.DTOs
+﻿namespace SmallFactory.DTOs
 {
     public class ProductionChainDto
     {
