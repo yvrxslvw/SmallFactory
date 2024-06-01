@@ -1,39 +1,87 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using SmallFactory.DTOs;
+using SmallFactory.Exceptions;
+using SmallFactory.Interfaces;
+using SmallFactory.Models;
 
 namespace SmallFactory.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StoragesController : ControllerBase
+    public class StoragesController(IMapper mapper, IStoragesRepository storagesRepository) : ControllerBase
     {
+        private readonly IMapper _mapper = mapper;
+        private readonly IStoragesRepository _storagesRepository = storagesRepository;
+
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok("get all storages");
+            try
+            {
+                List<Storage> storages = (await _storagesRepository.GetStoragesAsync()).ToList();
+                return Ok(_mapper.Map<List<StorageDto>>(storages));
+            }
+            catch (ApiException exc)
+            {
+                return StatusCode(exc.Code, exc.Message);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            return Ok($"get {id} storage");
+            try
+            {
+                Storage storage = await _storagesRepository.GetStorageByIdAsync(id);
+                return Ok(_mapper.Map<StorageDto>(storage));
+            }
+            catch (ApiException exc)
+            {
+                return StatusCode(exc.Code, exc.Message);
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post()
+        public async Task<IActionResult> Post([FromBody] CreateStorageDto createStorageDto)
         {
-            return Ok("create storage");
+            try
+            {
+                Storage storage = await _storagesRepository.CreateStorageAsync(createStorageDto);
+                return Ok(_mapper.Map<StorageDto>(storage));
+            }
+            catch (ApiException exc)
+            {
+                return StatusCode(exc.Code, exc.Message);
+            }
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id)
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateStorageDto updateStorageDto)
         {
-            return Ok($"update {id} storage");
+            try
+            {
+                Storage storage = await _storagesRepository.UpdateStorageAsync(id, updateStorageDto);
+                return Ok(_mapper.Map<StorageDto>(storage));
+            }
+            catch (ApiException exc)
+            {
+                return StatusCode(exc.Code, exc.Message);
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            return Ok($"delete {id} storage");
+            try
+            {
+                await _storagesRepository.DeleteStorageAsync(id);
+                return Ok($"Хранилище с ID: {id} успешно удалено.");
+            }
+            catch (ApiException exc)
+            {
+                return StatusCode(exc.Code, exc.Message);
+            }
         }
     }
 }
