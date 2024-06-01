@@ -19,6 +19,8 @@ namespace SmallFactory.Utils
             CreateMap<Part, PartDto>();
 
             CreateMap<Storage, StorageDto>();
+
+            CreateMap<ShopItem, ShopItemDto>();
         }
     }
 }

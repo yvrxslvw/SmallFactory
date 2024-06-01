@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmallFactory.Data;
 using SmallFactory.DTOs;
+using SmallFactory.Exceptions;
 using SmallFactory.Interfaces;
 using SmallFactory.Models;
-using SmallFactory.Exceptions;
 
 namespace SmallFactory.Repositories
 {

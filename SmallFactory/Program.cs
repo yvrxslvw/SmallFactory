@@ -29,6 +29,7 @@ namespace SmallFactory
             builder.Services.AddScoped<IReceiptsRepository, ReceiptsRepository>();
             builder.Services.AddScoped<IPartsRepository, PartsRepository>();
             builder.Services.AddScoped<IStoragesRepository, StoragesRepository>();
+            builder.Services.AddScoped<IShopItemsRepository, ShopItemsRepository>();
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
