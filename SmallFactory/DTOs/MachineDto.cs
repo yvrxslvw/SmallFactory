@@ -10,6 +10,6 @@ namespace SmallFactory.DTOs
 
         public MachineTypes Type { get; set; }
 
-        public int ReceiptId { get; set; }
+        public ReceiptDto Receipt { get; set; }
     }
 }

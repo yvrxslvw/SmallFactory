@@ -35,7 +35,8 @@ namespace SmallFactory.Repositories
 
         public async Task<Part> GetPartByIdAsync(int id)
         {
-            Part? part = await _partsContext.Parts.FirstOrDefaultAsync(p => p.Id == id);
+            Part? part = await _partsContext.Parts
+                .FirstOrDefaultAsync(p => p.Id == id);
             if (part == null)
                 throw new ApiException(404, "Детали с таким ID не существует.");
             return part;
@@ -43,7 +44,9 @@ namespace SmallFactory.Repositories
 
         public async Task<IEnumerable<Part>> GetPartsAsync()
         {
-            List<Part> parts = await _partsContext.Parts.ToListAsync();
+            List<Part> parts = await _partsContext.Parts
+                .OrderBy(p => p.Id)
+                .ToListAsync();
             return parts;
         }
 

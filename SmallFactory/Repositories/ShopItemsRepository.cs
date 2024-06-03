@@ -35,6 +35,7 @@ namespace SmallFactory.Repositories
         public async Task DeleteShopItemAsync(int id)
         {
             ShopItem? shopItem = await _shopItemsContext.ShopItems
+                .Include(si => si.Part)
                 .FirstOrDefaultAsync(si => si.Id == id);
             if (shopItem == null)
                 throw new ApiException(404, "Товара с таким ID не существует.");
@@ -45,6 +46,7 @@ namespace SmallFactory.Repositories
         public async Task<ShopItem> GetShopItemByIdAsync(int id)
         {
             ShopItem? shopItem = await _shopItemsContext.ShopItems
+                .Include(si => si.Part)
                 .FirstOrDefaultAsync(si => si.Id == id);
             if (shopItem == null)
                 throw new ApiException(404, "Товара с таким ID не существует.");
@@ -54,6 +56,7 @@ namespace SmallFactory.Repositories
         public async Task<IEnumerable<ShopItem>> GetShopItemsAsync()
         {
             List<ShopItem> shopItems = await _shopItemsContext.ShopItems
+                .Include(si => si.Part)
                 .OrderBy(si => si.Id)
                 .ToListAsync();
             return shopItems;
@@ -62,6 +65,7 @@ namespace SmallFactory.Repositories
         public async Task<ShopItem> UpdateShopItemAsync(int id, UpdateShopItemDto updateShopItemDto)
         {
             ShopItem? shopItem = await _shopItemsContext.ShopItems
+                .Include(si => si.Part)
                 .FirstOrDefaultAsync(si => si.Id == id);
             if (shopItem == null)
                 throw new ApiException(404, "Товара с таким ID не существует.");

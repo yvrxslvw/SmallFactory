@@ -8,16 +8,16 @@ namespace SmallFactory.DTOs
 
         public MachineTypes ProductionType { get; set; }
 
-        public int ManufacturedPartId { get; set; }
-
-        public int Material1PartId { get; set; }
-
-        public int Material2PartId { get; set; }
-
-        public int Material3PartId { get; set; }
-
-        public int Material4PartId { get; set; }
-
         public double ProductionRate { get; set; }
+
+        public PartDto ManufacturedPart { get; set; }
+
+        public PartDto Material1Part { get; set; }
+
+        public PartDto Material2Part { get; set; }
+
+        public PartDto Material3Part { get; set; }
+
+        public PartDto Material4Part { get; set; }
     }
 }

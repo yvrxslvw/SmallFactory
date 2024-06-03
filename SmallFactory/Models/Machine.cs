@@ -42,7 +42,5 @@ namespace SmallFactory.Models
         public ProductionChain ProductionChain { get; set; }
 
         public Receipt Receipt { get; set; }
-
-        public Storage Storage { get; set; }
     }
 }

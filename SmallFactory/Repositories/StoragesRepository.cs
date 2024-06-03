@@ -33,7 +33,9 @@ namespace SmallFactory.Repositories
 
         public async Task DeleteStorageAsync(int id)
         {
-            Storage? storage = await _storagesContext.Storages.FirstOrDefaultAsync(s => s.Id == id);
+            Storage? storage = await _storagesContext.Storages
+                .Include(s => s.Part)
+                .FirstOrDefaultAsync(s => s.Id == id);
             if (storage == null)
                 throw new ApiException(404, "Хранилища с таким ID не существует.");
             _storagesContext.Storages.Remove(storage);
@@ -43,6 +45,7 @@ namespace SmallFactory.Repositories
         public async Task<Storage> GetStorageByIdAsync(int id)
         {
             Storage? storage = await _storagesContext.Storages
+                .Include(s => s.Part)
                 .FirstOrDefaultAsync(s => s.Id == id);
             if (storage == null)
                 throw new ApiException(404, "Хранилища с таким ID не существует.");
@@ -52,6 +55,7 @@ namespace SmallFactory.Repositories
         public async Task<IEnumerable<Storage>> GetStoragesAsync()
         {
             List<Storage> storages = await _storagesContext.Storages
+                .Include(s => s.Part)
                 .OrderBy(s => s.Id)
                 .ToListAsync();
             return storages;
@@ -59,7 +63,9 @@ namespace SmallFactory.Repositories
 
         public async Task<Storage> UpdateStorageAsync(int id, UpdateStorageDto updateStorageDto)
         {
-            Storage? storage = await _storagesContext.Storages.FirstOrDefaultAsync(s => s.Id == id);
+            Storage? storage = await _storagesContext.Storages
+                .Include(s => s.Part)
+                .FirstOrDefaultAsync(s => s.Id == id);
             if (storage == null)
                 throw new ApiException(404, "Хранилища с таким ID не существует.");
             if (updateStorageDto.PartId != 0)

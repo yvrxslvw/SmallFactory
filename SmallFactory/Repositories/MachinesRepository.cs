@@ -33,7 +33,9 @@ namespace SmallFactory.Repositories
 
         public async Task DeleteMachineAsync(int id)
         {
-            Machine? machine = await _machinesContext.Machines.FirstOrDefaultAsync(m => m.Id == id);
+            Machine? machine = await _machinesContext.Machines
+                .Include(m => m.Receipt)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (machine == null)
                 throw new ApiException(404, "Станка с таким ID не существует.");
             _machinesContext.Machines.Remove(machine);
@@ -43,6 +45,7 @@ namespace SmallFactory.Repositories
         public async Task<Machine> GetMachineByIdAsync(int id)
         {
             Machine? machine = await _machinesContext.Machines
+                .Include(m => m.Receipt)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (machine == null)
                 throw new ApiException(404, "Станка с таким ID не существует.");
@@ -52,6 +55,7 @@ namespace SmallFactory.Repositories
         public async Task<IEnumerable<Machine>> GetMachinesAsync()
         {
             List<Machine> machines = await _machinesContext.Machines
+                .Include(m => m.Receipt)
                 .OrderBy(m => m.Id)
                 .ToListAsync();
             return machines;
@@ -59,7 +63,9 @@ namespace SmallFactory.Repositories
 
         public async Task<Machine> UpdateMachineAsync(int id, UpdateMachineDto updateMachineDto)
         {
-            Machine? machine = await _machinesContext.Machines.FirstOrDefaultAsync(m => m.Id == id);
+            Machine? machine = await _machinesContext.Machines
+                .Include(m => m.Receipt)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (machine == null)
                 throw new ApiException(404, "Станка с таким ID не существует.");
             if (updateMachineDto.Type != null)

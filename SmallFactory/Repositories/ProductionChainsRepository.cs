@@ -31,7 +31,9 @@ namespace SmallFactory.Repositories
 
         public async Task DeleteProductionChainAsync(int id)
         {
-            ProductionChain? productionChain = await _productionChainsContext.ProductionChains.FirstOrDefaultAsync(pc => pc.Id == id);
+            ProductionChain? productionChain = await _productionChainsContext.ProductionChains
+                .Include(pc => pc.Machines)
+                .FirstOrDefaultAsync(pc => pc.Id == id);
             if (productionChain == null)
                 throw new ApiException(404, "Производственной цепочки с таким ID не существует.");
             _productionChainsContext.ProductionChains.Remove(productionChain);
@@ -41,6 +43,7 @@ namespace SmallFactory.Repositories
         public async Task<ProductionChain> GetProductionChainByIdAsync(int id)
         {
             ProductionChain? productionChain = await _productionChainsContext.ProductionChains
+                .Include(pc => pc.Machines)
                 .FirstOrDefaultAsync(pc => pc.Id == id);
             if (productionChain == null)
                 throw new ApiException(404, "Производственной цепочки с таким ID не существует.");
@@ -50,6 +53,7 @@ namespace SmallFactory.Repositories
         public async Task<IEnumerable<ProductionChain>> GetProductionChainsAsync()
         {
             List<ProductionChain> productionChains = await _productionChainsContext.ProductionChains
+                .Include(pc => pc.Machines)
                 .OrderBy(pc => pc.Id)
                 .ToListAsync();
             return productionChains;
@@ -58,6 +62,7 @@ namespace SmallFactory.Repositories
         public async Task<ProductionChain> UpdateProductionChainAsync(int id, UpdateProductionChainDto updateProductionChainDto)
         {
             ProductionChain? productionChain = await _productionChainsContext.ProductionChains
+                .Include(pc => pc.Machines)
                 .FirstOrDefaultAsync(pc => pc.Id == id);
             if (productionChain == null)
                 throw new ApiException(404, "Производственной цепочки с таким ID не существует.");

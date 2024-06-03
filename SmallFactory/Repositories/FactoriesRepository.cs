@@ -29,6 +29,10 @@ namespace SmallFactory.Repositories
         {
             Factory? factory = await _factoriesContext.Factories
                 .Include(f => f.ProductionChains)
+                .ThenInclude(pc => pc.Machines)
+                .ThenInclude(m => m.Receipt)
+                .Include(f => f.Storages)
+                .ThenInclude(s => s.Part)
                 .FirstOrDefaultAsync(f => f.Id == id);
             if (factory == null) throw new ApiException(404, "Завода с таким ID не существует.");
             _factoriesContext.Factories.Remove(factory);
@@ -39,6 +43,10 @@ namespace SmallFactory.Repositories
         {
             List<Factory> factories = await _factoriesContext.Factories
                 .Include(f => f.ProductionChains)
+                .ThenInclude(pc => pc.Machines)
+                .ThenInclude(m => m.Receipt)
+                .Include(f => f.Storages)
+                .ThenInclude(s => s.Part)
                 .OrderBy(f => f.Id)
                 .ToListAsync();
             return factories;
@@ -48,6 +56,10 @@ namespace SmallFactory.Repositories
         {
             Factory? factory = await _factoriesContext.Factories
                 .Include(f => f.ProductionChains)
+                .ThenInclude(pc => pc.Machines)
+                .ThenInclude(m => m.Receipt)
+                .Include(f => f.Storages)
+                .ThenInclude(s => s.Part)
                 .FirstOrDefaultAsync(f => f.Id == id);
             if (factory == null) throw new ApiException(404, "Завода с таким ID не существует.");
             return factory;
@@ -57,6 +69,10 @@ namespace SmallFactory.Repositories
         {
             Factory? factory = await _factoriesContext.Factories
                 .Include(f => f.ProductionChains)
+                .ThenInclude(pc => pc.Machines)
+                .ThenInclude(m => m.Receipt)
+                .Include(f => f.Storages)
+                .ThenInclude(s => s.Part)
                 .FirstOrDefaultAsync(f => f.Id == id);
             if (factory == null) throw new ApiException(404, "Завода с таким ID не существует.");
             if (updateFactoryDto.Name == factory.Name) return factory;

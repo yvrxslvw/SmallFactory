@@ -41,7 +41,13 @@ namespace SmallFactory.Repositories
 
         public async Task DeleteReceiptAsync(int id)
         {
-            Receipt? receipt = await _receiptsContext.Receipts.FirstOrDefaultAsync(r => r.Id == id);
+            Receipt? receipt = await _receiptsContext.Receipts
+                .Include(r => r.ManufacturedPart)
+                .Include(r => r.Material1Part)
+                .Include(r => r.Material2Part)
+                .Include(r => r.Material3Part)
+                .Include(r => r.Material4Part)
+                .FirstOrDefaultAsync(r => r.Id == id);
             if (receipt == null)
                 throw new ApiException(404, "Рецепта с таким ID не существует.");
             _receiptsContext.Receipts.Remove(receipt);
@@ -51,6 +57,11 @@ namespace SmallFactory.Repositories
         public async Task<Receipt> GetReceiptByIdAsync(int id)
         {
             Receipt? receipt = await _receiptsContext.Receipts
+                .Include(r => r.ManufacturedPart)
+                .Include(r => r.Material1Part)
+                .Include(r => r.Material2Part)
+                .Include(r => r.Material3Part)
+                .Include(r => r.Material4Part)
                 .FirstOrDefaultAsync(r => r.Id == id);
             if (receipt == null)
                 throw new ApiException(404, "Рецепта с таким ID не существует.");
@@ -60,6 +71,11 @@ namespace SmallFactory.Repositories
         public async Task<IEnumerable<Receipt>> GetReceiptsAsync()
         {
             List<Receipt> receipts = await _receiptsContext.Receipts
+                .Include(r => r.ManufacturedPart)
+                .Include(r => r.Material1Part)
+                .Include(r => r.Material2Part)
+                .Include(r => r.Material3Part)
+                .Include(r => r.Material4Part)
                 .OrderBy(r => r.Id)
                 .ToListAsync();
             return receipts;
@@ -67,9 +83,19 @@ namespace SmallFactory.Repositories
 
         public async Task<Receipt> UpdateReceiptAsync(int id, UpdateReceiptDto updateReceiptDto)
         {
-            Receipt? receipt = await _receiptsContext.Receipts.FirstOrDefaultAsync(r => r.Id == id);
+            Receipt? receipt = await _receiptsContext.Receipts
+                .Include(r => r.ManufacturedPart)
+                .Include(r => r.Material1Part)
+                .Include(r => r.Material2Part)
+                .Include(r => r.Material3Part)
+                .Include(r => r.Material4Part)
+                .FirstOrDefaultAsync(r => r.Id == id);
             if (receipt == null)
                 throw new ApiException(404, "Рецепта с таким ID не существует.");
+            if (updateReceiptDto.ProductionType != null)
+            {
+                receipt.ProductionType = (MachineTypes)updateReceiptDto.ProductionType;
+            }
             if (updateReceiptDto.ResultPartId != null)
             {
                 int partId = (int)updateReceiptDto.ResultPartId;
@@ -104,6 +130,10 @@ namespace SmallFactory.Repositories
                 if (!(await IsPartExists(partId)))
                     throw new ApiException(404, "Детали для материала 4 не существует.");
                 receipt.Material4PartId = partId;
+            }
+            if (updateReceiptDto.ProductionRate != null)
+            {
+                receipt.ProductionRate = (double)updateReceiptDto.ProductionRate;
             }
             await Save();
             return receipt;
