@@ -24,5 +24,19 @@ namespace SmallFactory.Controllers
                 return StatusCode(exc.Code, exc.Message);
             }
         }
+
+        [HttpPost("sell")]
+        public async Task<IActionResult> SellPart([FromBody] SellPartDto sellPartDto)
+        {
+            try
+            {
+                string result = await _shopService.SellPartAsync(sellPartDto);
+                return Ok(result);
+            }
+            catch (ApiException exc)
+            {
+                return StatusCode(exc.Code, exc.Message);
+            }
+        }
     }
 }
