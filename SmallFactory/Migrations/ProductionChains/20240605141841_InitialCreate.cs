@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace SmallFactory.Migrations
+namespace SmallFactory.Migrations.ProductionChains
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -116,7 +117,8 @@ namespace SmallFactory.Migrations
                     part_id = table.Column<int>(type: "integer", nullable: false),
                     price = table.Column<decimal>(type: "numeric", nullable: false),
                     count = table.Column<int>(type: "integer", nullable: false),
-                    cooldown = table.Column<int>(type: "integer", nullable: false)
+                    cooldown = table.Column<int>(type: "integer", nullable: false),
+                    last_replineshment = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -166,7 +168,11 @@ namespace SmallFactory.Migrations
                     production_chain_id = table.Column<int>(type: "integer", nullable: false),
                     type = table.Column<int>(type: "integer", nullable: false),
                     receipt_id = table.Column<int>(type: "integer", nullable: false),
-                    storage_id = table.Column<int>(type: "integer", nullable: false)
+                    input_1_count = table.Column<int>(type: "integer", nullable: false),
+                    input_2_count = table.Column<int>(type: "integer", nullable: false),
+                    input_3_count = table.Column<int>(type: "integer", nullable: false),
+                    input_4_count = table.Column<int>(type: "integer", nullable: false),
+                    output_count = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -183,13 +189,13 @@ namespace SmallFactory.Migrations
                         principalTable: "receipts",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_machines_storages_storage_id",
-                        column: x => x.storage_id,
-                        principalTable: "storages",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_factories_name",
+                table: "factories",
+                column: "name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_machines_production_chain_id",
@@ -202,14 +208,21 @@ namespace SmallFactory.Migrations
                 column: "receipt_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_machines_storage_id",
-                table: "machines",
-                column: "storage_id");
+                name: "IX_parts_name",
+                table: "parts",
+                column: "name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_production_chains_factory_id",
                 table: "production_chains",
                 column: "factory_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_production_chains_name",
+                table: "production_chains",
+                column: "name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_receipts_manufactured_part_id",
@@ -263,13 +276,13 @@ namespace SmallFactory.Migrations
                 name: "shop");
 
             migrationBuilder.DropTable(
+                name: "storages");
+
+            migrationBuilder.DropTable(
                 name: "production_chains");
 
             migrationBuilder.DropTable(
                 name: "receipts");
-
-            migrationBuilder.DropTable(
-                name: "storages");
 
             migrationBuilder.DropTable(
                 name: "factories");
