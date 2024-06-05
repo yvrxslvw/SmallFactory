@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -6,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace SmallFactory.Migrations.Machines
 {
     /// <inheritdoc />
-    public partial class RemakeMachines : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -116,7 +117,8 @@ namespace SmallFactory.Migrations.Machines
                     part_id = table.Column<int>(type: "integer", nullable: false),
                     price = table.Column<decimal>(type: "numeric", nullable: false),
                     count = table.Column<int>(type: "integer", nullable: false),
-                    cooldown = table.Column<int>(type: "integer", nullable: false)
+                    cooldown = table.Column<int>(type: "integer", nullable: false),
+                    last_replineshment = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
