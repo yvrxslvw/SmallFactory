@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SmallFactory.Data;
 using SmallFactory.Interfaces;
 using SmallFactory.Repositories;
+using SmallFactory.Services;
 
 namespace SmallFactory
 {
@@ -30,6 +31,8 @@ namespace SmallFactory
             builder.Services.AddScoped<IPartsRepository, PartsRepository>();
             builder.Services.AddScoped<IStoragesRepository, StoragesRepository>();
             builder.Services.AddScoped<IShopItemsRepository, ShopItemsRepository>();
+
+            builder.Services.AddTransient<IShopService, ShopService>();
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
