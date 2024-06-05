@@ -3,6 +3,10 @@ using SmallFactory.Data;
 using SmallFactory.Interfaces;
 using SmallFactory.Repositories;
 using SmallFactory.Services;
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
+using SmallFactory.Utils;
 
 namespace SmallFactory
 {
@@ -34,6 +38,12 @@ namespace SmallFactory
 
             builder.Services.AddTransient<IShopService, ShopService>();
 
+            builder.Services.AddSingleton<IJobFactory, SingletonJobFactory>();
+            builder.Services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+
+            
+
+            builder.Services.AddHostedService<QuartzHostedService>();
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
