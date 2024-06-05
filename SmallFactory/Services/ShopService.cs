@@ -39,7 +39,7 @@ namespace SmallFactory.Services
             shopItem.Count -= buyPartDto.Quantity;
             storage.Count += buyPartDto.Quantity;
 
-            await SaveAll();
+            await _storagesContext.SaveChangesAsync();
             return $"Успешная покупка \"{shopItem.Part.Name}\" {buyPartDto.Quantity}шт на сумму ${price}.\nБаланс: ${factory.Budget}\nДеталей на складе: {storage.Count}";
         }
 
@@ -55,7 +55,7 @@ namespace SmallFactory.Services
                 shopItem.LastReplineshment = DateTime.Now.ToUniversalTime();
                 Console.WriteLine($"[{DateTime.Now}] Replenishment \"{shopItem.Part.Name}\"");
             });
-            await SaveAll();
+            await _shopItemsContext.SaveChangesAsync();
         }
 
         public async Task<string> SellPartAsync(SellPartDto sellPartDto)
@@ -81,16 +81,8 @@ namespace SmallFactory.Services
             shopItem.Count += sellPartDto.Quantity;
             storage.Count -= sellPartDto.Quantity;
 
-            await SaveAll();
+            await _storagesContext.SaveChangesAsync();
             return $"Успешная продажа \"{shopItem.Part.Name}\" {sellPartDto.Quantity}шт на сумму ${price}.\nБаланс: ${factory.Budget}\nДеталей на складе: {storage.Count}";
-        }
-
-        private async Task SaveAll()
-        {
-            int storagesResult = await _storagesContext.SaveChangesAsync();
-            int shopItemsResult = await _shopItemsContext.SaveChangesAsync();
-            if (storagesResult == 0 || shopItemsResult == 0)
-                throw new ApiUnexpectedException();
         }
     }
 }
