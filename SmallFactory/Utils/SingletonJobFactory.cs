@@ -9,7 +9,7 @@ namespace SmallFactory.Utils
 
         public IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
         {
-            return (_serviceProvider.GetService(bundle.JobDetail.JobType) as IJob)!;
+            return (_serviceProvider.GetRequiredService(bundle.JobDetail.JobType) as IJob)!;
         }
 
         public void ReturnJob(IJob job) {}

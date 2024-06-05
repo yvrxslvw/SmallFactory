@@ -7,6 +7,8 @@ using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
 using SmallFactory.Utils;
+using SmallFactory.Tasks;
+using SmallFactory.Models;
 
 namespace SmallFactory
 {
@@ -40,8 +42,10 @@ namespace SmallFactory
 
             builder.Services.AddSingleton<IJobFactory, SingletonJobFactory>();
             builder.Services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
-
-            
+            builder.Services.AddSingleton<ReplenishmentTask>();
+            builder.Services.AddSingleton(new JobSchedule(
+                jobType: typeof(ReplenishmentTask),
+                cronExpression: "0/30 * * * * ?"));
 
             builder.Services.AddHostedService<QuartzHostedService>();
             builder.Services.AddControllers();

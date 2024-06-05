@@ -25,7 +25,8 @@ namespace SmallFactory.Repositories
                 PartId = createShopItemDto.PartId,
                 Price = createShopItemDto.Price,
                 CoolDown = createShopItemDto.CoolDown,
-                Count = 0
+                Count = 0,
+                LastReplineshment = DateTime.Now.ToUniversalTime()
             };
             _shopItemsContext.ShopItems.Add(shopItem);
             await Save();

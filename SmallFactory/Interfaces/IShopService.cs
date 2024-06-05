@@ -6,5 +6,6 @@ namespace SmallFactory.Interfaces
     {
         public Task<string> BuyPartAsync(BuyPartDto buyPartDto);
         public Task<string> SellPartAsync(SellPartDto sellPartDto);
+        public Task ReplenishmentAsync();
     }
 }

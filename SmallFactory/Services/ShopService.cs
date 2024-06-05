@@ -7,9 +7,10 @@ using SmallFactory.Models;
 
 namespace SmallFactory.Services
 {
-    public class ShopService(StoragesContext storagesContext) : IShopService
+    public class ShopService(StoragesContext storagesContext, ShopItemsContext shopItemsContext) : IShopService
     {
         private readonly StoragesContext _storagesContext = storagesContext;
+        private readonly ShopItemsContext _shopItemsContext = shopItemsContext;
 
         public async Task<string> BuyPartAsync(BuyPartDto buyPartDto)
         {
@@ -38,8 +39,23 @@ namespace SmallFactory.Services
             shopItem.Count -= buyPartDto.Quantity;
             storage.Count += buyPartDto.Quantity;
 
-            await Save();
+            await SaveAll();
             return $"Успешная покупка \"{shopItem.Part.Name}\" {buyPartDto.Quantity}шт на сумму ${price}.\nБаланс: ${factory.Budget}\nДеталей на складе: {storage.Count}";
+        }
+
+        public async Task ReplenishmentAsync()
+        {
+            await _shopItemsContext.ShopItems.Include(si => si.Part).ForEachAsync(shopItem =>
+            {
+                DateTime last = shopItem.LastReplineshment;
+                DateTime now = DateTime.Now.ToUniversalTime();
+                double span = Math.Round(now.Subtract(last).TotalMinutes, 1);
+                if (span < shopItem.CoolDown) return;
+                shopItem.Count += 1;
+                shopItem.LastReplineshment = DateTime.Now.ToUniversalTime();
+                Console.WriteLine($"[{DateTime.Now}] Replenishment \"{shopItem.Part.Name}\"");
+            });
+            await SaveAll();
         }
 
         public async Task<string> SellPartAsync(SellPartDto sellPartDto)
@@ -65,15 +81,16 @@ namespace SmallFactory.Services
             shopItem.Count += sellPartDto.Quantity;
             storage.Count -= sellPartDto.Quantity;
 
-            await Save();
+            await SaveAll();
             return $"Успешная продажа \"{shopItem.Part.Name}\" {sellPartDto.Quantity}шт на сумму ${price}.\nБаланс: ${factory.Budget}\nДеталей на складе: {storage.Count}";
         }
 
-        private async Task Save()
+        private async Task SaveAll()
         {
-            int result = await _storagesContext.SaveChangesAsync();
-            if (result == 0)
-                    throw new ApiUnexpectedException();
+            int storagesResult = await _storagesContext.SaveChangesAsync();
+            int shopItemsResult = await _shopItemsContext.SaveChangesAsync();
+            if (storagesResult == 0 || shopItemsResult == 0)
+                throw new ApiUnexpectedException();
         }
     }
 }
