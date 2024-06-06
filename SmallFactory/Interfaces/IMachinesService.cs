@@ -1,9 +1,7 @@
-﻿using SmallFactory.DTOs;
-
-namespace SmallFactory.Interfaces
+﻿namespace SmallFactory.Interfaces
 {
     public interface IMachinesService
     {
-        public Task<string> MakeCycleAsync(MakeMachineCycleDto makeMachineCycleDto);
+        public Task<string> MakeCycleAsync(int machineId);
     }
 }

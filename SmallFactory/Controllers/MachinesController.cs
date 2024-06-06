@@ -84,19 +84,5 @@ namespace SmallFactory.Controllers
                 return StatusCode(exc.Code, exc.Message);
             }
         }
-
-        [HttpPost("test")]
-        public async Task<IActionResult> Test(MakeMachineCycleDto makeMachineCycleDto)
-        {
-            try
-            {
-                string message = await _machinesService.MakeCycleAsync(makeMachineCycleDto);
-                return Ok(message);
-            }
-            catch (ApiException exc)
-            {
-                return StatusCode(exc.Code, exc.Message);
-            }
-        }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmallFactory.Data;
-using SmallFactory.DTOs;
 using SmallFactory.Exceptions;
 using SmallFactory.Interfaces;
 using SmallFactory.Models;
@@ -11,12 +10,12 @@ namespace SmallFactory.Services
     {
         private readonly AppDbContext _context = context;
 
-        public async Task<string> MakeCycleAsync(MakeMachineCycleDto makeMachineCycleDto)
+        public async Task<string> MakeCycleAsync(int machineId)
         {
             Machine? machine = await _context.Machines
                 .Include(m => m.Receipt)
                 .Include(m => m.ProductionChain)
-                .FirstOrDefaultAsync(m => m.Id == makeMachineCycleDto.MachineId);
+                .FirstOrDefaultAsync(m => m.Id == machineId);
             if (machine == null)
                 throw new ApiException(404, "Станка с таким ID не существует.");
 

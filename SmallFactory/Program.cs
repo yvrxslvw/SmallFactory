@@ -1,14 +1,14 @@
 using Microsoft.EntityFrameworkCore;
-using SmallFactory.Data;
-using SmallFactory.Interfaces;
-using SmallFactory.Repositories;
-using SmallFactory.Services;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
-using SmallFactory.Utils;
-using SmallFactory.Tasks;
+using SmallFactory.Data;
+using SmallFactory.Interfaces;
 using SmallFactory.Models;
+using SmallFactory.Repositories;
+using SmallFactory.Services;
+using SmallFactory.Tasks;
+using SmallFactory.Utils;
 
 namespace SmallFactory
 {
