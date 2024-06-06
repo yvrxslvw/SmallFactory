@@ -9,10 +9,11 @@ namespace SmallFactory.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MachinesController(IMachinesRepository machinesRepository, IMapper mapper) : ControllerBase
+    public class MachinesController(IMachinesRepository machinesRepository, IMapper mapper, IMachinesService machinesService) : ControllerBase
     {
         private readonly IMachinesRepository _machinesRepository = machinesRepository;
         private readonly IMapper _mapper = mapper;
+        private readonly IMachinesService _machinesService = machinesService;
 
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -77,6 +78,20 @@ namespace SmallFactory.Controllers
             {
                 await _machinesRepository.DeleteMachineAsync(id);
                 return Ok($"Станок с ID: {id} успешно удалён.");
+            }
+            catch (ApiException exc)
+            {
+                return StatusCode(exc.Code, exc.Message);
+            }
+        }
+
+        [HttpPost("test")]
+        public async Task<IActionResult> Test(MakeMachineCycleDto makeMachineCycleDto)
+        {
+            try
+            {
+                string message = await _machinesService.MakeCycleAsync(makeMachineCycleDto);
+                return Ok(message);
             }
             catch (ApiException exc)
             {

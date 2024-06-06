@@ -33,6 +33,7 @@ namespace SmallFactory
             builder.Services.AddScoped<IShopItemsRepository, ShopItemsRepository>();
 
             builder.Services.AddTransient<IShopService, ShopService>();
+            builder.Services.AddTransient<IMachinesService, MachinesService>();
 
             builder.Services.AddSingleton<IJobFactory, SingletonJobFactory>();
             builder.Services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
