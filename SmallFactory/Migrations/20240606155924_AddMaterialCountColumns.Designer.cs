@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SmallFactory.Data;
@@ -11,9 +12,11 @@ using SmallFactory.Data;
 namespace SmallFactory.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240606155924_AddMaterialCountColumns")]
+    partial class AddMaterialCountColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,8 +176,8 @@ namespace SmallFactory.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("material_4_part_id");
 
-                    b.Property<int>("ProductionRate")
-                        .HasColumnType("integer")
+                    b.Property<double>("ProductionRate")
+                        .HasColumnType("double precision")
                         .HasColumnName("production_rate")
                         .HasComment("Per minute");
 

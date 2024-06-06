@@ -29,7 +29,19 @@ namespace SmallFactory.Models
 
         [Column("production_rate")]
         [Comment("Per minute")]
-        public double ProductionRate { get; set; }
+        public int ProductionRate { get; set; }
+
+        [Column("material_1_count")]
+        public int Material1Count { get; set; }
+
+        [Column("material_2_count")]
+        public int Material2Count { get; set; }
+
+        [Column("material_3_count")]
+        public int Material3Count { get; set; }
+
+        [Column("material_4_count")]
+        public int Material4Count { get; set; }
 
         public Part ManufacturedPart { get; set; }
 

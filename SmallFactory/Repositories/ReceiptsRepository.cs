@@ -23,6 +23,8 @@ namespace SmallFactory.Repositories
                 throw new ApiException(404, "Детали для материала 3 не существует.");
             if (!(await IsPartExists(createReceiptDto.Material4Id)))
                 throw new ApiException(404, "Детали для материала 4 не существует.");
+            if (createReceiptDto.ProductionRate < 1)
+                throw new ApiException(400, "Некорректное количество деталей в минуту.");
             Receipt receipt = new Receipt()
             {
                 ProductionType = (MachineTypes)createReceiptDto.ProductionType,
@@ -132,7 +134,7 @@ namespace SmallFactory.Repositories
             }
             if (updateReceiptDto.ProductionRate != null)
             {
-                receipt.ProductionRate = (double)updateReceiptDto.ProductionRate;
+                receipt.ProductionRate = (int)updateReceiptDto.ProductionRate;
             }
             await Save();
             return receipt;

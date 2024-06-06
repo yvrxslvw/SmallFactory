@@ -47,7 +47,7 @@ namespace SmallFactory.Services
 
             if (receipt.ProductionType == MachineTypes.CONSTRUCTOR)
             {
-                int requiredPart1 = 1;
+                int requiredPart1 = receipt.Material1Count;
 
                 if (part1Storage.Count - requiredPart1 < 0)
                     throw new ApiException(403, $"На складе недостаточно \"{receipt.Material1Part.Name}\".");
@@ -57,8 +57,8 @@ namespace SmallFactory.Services
 
             else if (receipt.ProductionType == MachineTypes.ASSEMBLER)
             {
-                int requiredPart1 = 1;
-                int requiredPart2 = 1;
+                int requiredPart1 = receipt.Material1Count;
+                int requiredPart2 = receipt.Material2Count;
 
                 if (part1Storage.Count - requiredPart1 < 0)
                     throw new ApiException(403, $"На складе недостаточно \"{receipt.Material1Part.Name}\".");
@@ -71,10 +71,10 @@ namespace SmallFactory.Services
 
             else if (receipt.ProductionType == MachineTypes.MANUFACTURER)
             {
-                int requiredPart1 = 1;
-                int requiredPart2 = 1;
-                int requiredPart3 = 1;
-                int requiredPart4 = 1;
+                int requiredPart1 = receipt.Material1Count;
+                int requiredPart2 = receipt.Material2Count;
+                int requiredPart3 = receipt.Material3Count;
+                int requiredPart4 = receipt.Material4Count;
 
                 if (part1Storage.Count - requiredPart1 < 0)
                     throw new ApiException(403, $"На складе недостаточно \"{receipt.Material1Part.Name}\".");
@@ -91,7 +91,7 @@ namespace SmallFactory.Services
                 part4Storage.Count -= requiredPart4;
             }
 
-            await Task.Delay(60 / (int)receipt.ProductionRate * 1000);
+            await Task.Delay(60 / receipt.ProductionRate * 1000);
             manufacturedPartStorage.Count += 1;
             await Save();
             return $"Деталь произведена. Количество на складе: {manufacturedPartStorage.Count}шт.";

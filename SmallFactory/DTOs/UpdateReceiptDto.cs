@@ -17,6 +17,14 @@ namespace SmallFactory.DTOs
 
         public int? Material4Id { get; set; }
 
-        public double? ProductionRate { get; set; }
+        public int? ProductionRate { get; set; }
+
+        public int? Material1Count { get; set; }
+
+        public int? Material2Count { get; set; }
+
+        public int? Material3Count { get; set; }
+
+        public int? Material4Count { get; set; }
     }
 }
