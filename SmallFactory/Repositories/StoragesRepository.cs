@@ -7,11 +7,9 @@ using SmallFactory.Models;
 
 namespace SmallFactory.Repositories
 {
-    public class StoragesRepository(StoragesContext storagesContext, FactoriesContext factoriesContext, PartsContext partsContext) : IStoragesRepository
+    public class StoragesRepository(AppDbContext context) : IStoragesRepository
     {
-        private readonly StoragesContext _storagesContext = storagesContext;
-        private readonly FactoriesContext _factoriesContext = factoriesContext;
-        private readonly PartsContext _partsContext = partsContext;
+        private readonly AppDbContext _context = context;
 
         public async Task<Storage> CreateStorageAsync(CreateStorageDto createStorageDto)
         {
@@ -26,25 +24,25 @@ namespace SmallFactory.Repositories
                 Count = 0,
                 Max = createStorageDto.Max
             };
-            _storagesContext.Storages.Add(storage);
+            _context.Storages.Add(storage);
             await Save();
             return storage;
         }
 
         public async Task DeleteStorageAsync(int id)
         {
-            Storage? storage = await _storagesContext.Storages
+            Storage? storage = await _context.Storages
                 .Include(s => s.Part)
                 .FirstOrDefaultAsync(s => s.Id == id);
             if (storage == null)
                 throw new ApiException(404, "Хранилища с таким ID не существует.");
-            _storagesContext.Storages.Remove(storage);
+            _context.Storages.Remove(storage);
             await Save();
         }
 
         public async Task<Storage> GetStorageByIdAsync(int id)
         {
-            Storage? storage = await _storagesContext.Storages
+            Storage? storage = await _context.Storages
                 .Include(s => s.Part)
                 .FirstOrDefaultAsync(s => s.Id == id);
             if (storage == null)
@@ -54,7 +52,7 @@ namespace SmallFactory.Repositories
 
         public async Task<IEnumerable<Storage>> GetStoragesAsync()
         {
-            List<Storage> storages = await _storagesContext.Storages
+            List<Storage> storages = await _context.Storages
                 .Include(s => s.Part)
                 .OrderBy(s => s.Id)
                 .ToListAsync();
@@ -63,7 +61,7 @@ namespace SmallFactory.Repositories
 
         public async Task<Storage> UpdateStorageAsync(int id, UpdateStorageDto updateStorageDto)
         {
-            Storage? storage = await _storagesContext.Storages
+            Storage? storage = await _context.Storages
                 .Include(s => s.Part)
                 .FirstOrDefaultAsync(s => s.Id == id);
             if (storage == null)
@@ -84,21 +82,21 @@ namespace SmallFactory.Repositories
 
         private async Task Save()
         {
-            int result = await _storagesContext.SaveChangesAsync();
+            int result = await _context.SaveChangesAsync();
             if (result == 0)
                 throw new ApiUnexpectedException();
         }
 
         private async Task<bool> IsFactoryExists(int factoryId)
         {
-            Factory? factory = await _factoriesContext.Factories.FirstOrDefaultAsync(f => f.Id == factoryId);
+            Factory? factory = await _context.Factories.FirstOrDefaultAsync(f => f.Id == factoryId);
             if (factory == null) return false;
             else return true;
         }
 
         private async Task<bool> IsPartExists(int partId)
         {
-            Part? part = await _partsContext.Parts.FirstOrDefaultAsync(p => p.Id == partId);
+            Part? part = await _context.Parts.FirstOrDefaultAsync(p => p.Id == partId);
             if (part == null) return false;
             else return true;
         }

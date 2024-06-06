@@ -7,10 +7,9 @@ using SmallFactory.Models;
 
 namespace SmallFactory.Repositories
 {
-    public class ShopItemsRepository(ShopItemsContext shopItemsContext, PartsContext partsContext) : IShopItemsRepository
+    public class ShopItemsRepository(AppDbContext context) : IShopItemsRepository
     {
-        private readonly ShopItemsContext _shopItemsContext = shopItemsContext;
-        private readonly PartsContext _partsContext = partsContext;
+        private readonly AppDbContext _context = context;
 
         public async Task<ShopItem> CreateShopItemAsync(CreateShopItemDto createShopItemDto)
         {
@@ -28,25 +27,25 @@ namespace SmallFactory.Repositories
                 Count = 0,
                 LastReplineshment = DateTime.Now.ToUniversalTime()
             };
-            _shopItemsContext.ShopItems.Add(shopItem);
+            _context.ShopItems.Add(shopItem);
             await Save();
             return shopItem;
         }
 
         public async Task DeleteShopItemAsync(int id)
         {
-            ShopItem? shopItem = await _shopItemsContext.ShopItems
+            ShopItem? shopItem = await _context.ShopItems
                 .Include(si => si.Part)
                 .FirstOrDefaultAsync(si => si.Id == id);
             if (shopItem == null)
                 throw new ApiException(404, "Товара с таким ID не существует.");
-            _shopItemsContext.ShopItems.Remove(shopItem);
+            _context.ShopItems.Remove(shopItem);
             await Save();
         }
 
         public async Task<ShopItem> GetShopItemByIdAsync(int id)
         {
-            ShopItem? shopItem = await _shopItemsContext.ShopItems
+            ShopItem? shopItem = await _context.ShopItems
                 .Include(si => si.Part)
                 .FirstOrDefaultAsync(si => si.Id == id);
             if (shopItem == null)
@@ -56,7 +55,7 @@ namespace SmallFactory.Repositories
 
         public async Task<IEnumerable<ShopItem>> GetShopItemsAsync()
         {
-            List<ShopItem> shopItems = await _shopItemsContext.ShopItems
+            List<ShopItem> shopItems = await _context.ShopItems
                 .Include(si => si.Part)
                 .OrderBy(si => si.Id)
                 .ToListAsync();
@@ -65,7 +64,7 @@ namespace SmallFactory.Repositories
 
         public async Task<ShopItem> UpdateShopItemAsync(int id, UpdateShopItemDto updateShopItemDto)
         {
-            ShopItem? shopItem = await _shopItemsContext.ShopItems
+            ShopItem? shopItem = await _context.ShopItems
                 .Include(si => si.Part)
                 .FirstOrDefaultAsync(si => si.Id == id);
             if (shopItem == null)
@@ -80,12 +79,12 @@ namespace SmallFactory.Repositories
 
         private async Task Save()
         {
-            await _shopItemsContext.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         private async Task<bool> IsPartExists(int partId)
         {
-            Part? part = await _partsContext.Parts.FirstOrDefaultAsync(p => p.Id == partId);
+            Part? part = await _context.Parts.FirstOrDefaultAsync(p => p.Id == partId);
             if (part == null) return false;
             else return true;
         }

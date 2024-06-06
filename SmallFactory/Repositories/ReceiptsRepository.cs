@@ -7,10 +7,9 @@ using SmallFactory.Models;
 
 namespace SmallFactory.Repositories
 {
-    public class ReceiptsRepository(ReceiptsContext receiptsContext, PartsContext partsContext) : IReceiptsRepository
+    public class ReceiptsRepository(AppDbContext context) : IReceiptsRepository
     {
-        private readonly ReceiptsContext _receiptsContext = receiptsContext;
-        private readonly PartsContext _partsContext = partsContext;
+        private readonly AppDbContext _context = context;
 
         public async Task<Receipt> CreateReceiptAsync(CreateReceiptDto createReceiptDto)
         {
@@ -34,14 +33,14 @@ namespace SmallFactory.Repositories
                 Material4PartId = createReceiptDto.Material4Id,
                 ProductionRate = createReceiptDto.ProductionRate,
             };
-            _receiptsContext.Receipts.Add(receipt);
+            _context.Receipts.Add(receipt);
             await Save();
             return receipt;
         }
 
         public async Task DeleteReceiptAsync(int id)
         {
-            Receipt? receipt = await _receiptsContext.Receipts
+            Receipt? receipt = await _context.Receipts
                 .Include(r => r.ManufacturedPart)
                 .Include(r => r.Material1Part)
                 .Include(r => r.Material2Part)
@@ -50,13 +49,13 @@ namespace SmallFactory.Repositories
                 .FirstOrDefaultAsync(r => r.Id == id);
             if (receipt == null)
                 throw new ApiException(404, "Рецепта с таким ID не существует.");
-            _receiptsContext.Receipts.Remove(receipt);
+            _context.Receipts.Remove(receipt);
             await Save();
         }
 
         public async Task<Receipt> GetReceiptByIdAsync(int id)
         {
-            Receipt? receipt = await _receiptsContext.Receipts
+            Receipt? receipt = await _context.Receipts
                 .Include(r => r.ManufacturedPart)
                 .Include(r => r.Material1Part)
                 .Include(r => r.Material2Part)
@@ -70,7 +69,7 @@ namespace SmallFactory.Repositories
 
         public async Task<IEnumerable<Receipt>> GetReceiptsAsync()
         {
-            List<Receipt> receipts = await _receiptsContext.Receipts
+            List<Receipt> receipts = await _context.Receipts
                 .Include(r => r.ManufacturedPart)
                 .Include(r => r.Material1Part)
                 .Include(r => r.Material2Part)
@@ -83,7 +82,7 @@ namespace SmallFactory.Repositories
 
         public async Task<Receipt> UpdateReceiptAsync(int id, UpdateReceiptDto updateReceiptDto)
         {
-            Receipt? receipt = await _receiptsContext.Receipts
+            Receipt? receipt = await _context.Receipts
                 .Include(r => r.ManufacturedPart)
                 .Include(r => r.Material1Part)
                 .Include(r => r.Material2Part)
@@ -141,14 +140,14 @@ namespace SmallFactory.Repositories
 
         private async Task Save()
         {
-            int result = await _receiptsContext.SaveChangesAsync();
+            int result = await _context.SaveChangesAsync();
             if (result == 0)
                 throw new ApiUnexpectedException();
         }
 
         private async Task<bool> IsPartExists(int partId)
         {
-            Part? part = await _partsContext.Parts.FirstOrDefaultAsync(p => p.Id == partId);
+            Part? part = await _context.Parts.FirstOrDefaultAsync(p => p.Id == partId);
             if (part == null) return false;
             else return true;
         }

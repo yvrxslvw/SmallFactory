@@ -7,17 +7,15 @@ using SmallFactory.Models;
 
 namespace SmallFactory.Repositories
 {
-    public class MachinesRepository(MachinesContext machinesContext, ProductionChainsContext productionChainsContext, ReceiptsContext receiptsContext) : IMachinesRepository
+    public class MachinesRepository(AppDbContext context) : IMachinesRepository
     {
-        private readonly MachinesContext _machinesContext = machinesContext;
-        private readonly ProductionChainsContext _productionChainsContext = productionChainsContext;
-        private readonly ReceiptsContext _receiptsContext = receiptsContext;
+        private readonly AppDbContext _context = context;
 
         public async Task<Machine> CreateMachineAsync(CreateMachineDto createMachineDto)
         {
-            if (await _productionChainsContext.ProductionChains.FirstOrDefaultAsync(pc => pc.Id == createMachineDto.ProductionChainId) == null)
+            if (await _context.ProductionChains.FirstOrDefaultAsync(pc => pc.Id == createMachineDto.ProductionChainId) == null)
                 throw new ApiException(404, "Производственной цепочки с таким ID не существует.");
-            if (await _receiptsContext.Receipts.FirstOrDefaultAsync(r => r.Id == createMachineDto.ReceiptId) == null)
+            if (await _context.Receipts.FirstOrDefaultAsync(r => r.Id == createMachineDto.ReceiptId) == null)
                 throw new ApiException(404, "Рецепта с таким ID не существует.");
             Machine machine = new()
             {
@@ -25,7 +23,7 @@ namespace SmallFactory.Repositories
                 Type = (MachineTypes)createMachineDto.Type,
                 ReceiptId = createMachineDto.ReceiptId
             };
-            _machinesContext.Machines.Add(machine);
+            _context.Machines.Add(machine);
             await Save();
             return machine;
 
@@ -33,18 +31,18 @@ namespace SmallFactory.Repositories
 
         public async Task DeleteMachineAsync(int id)
         {
-            Machine? machine = await _machinesContext.Machines
+            Machine? machine = await _context.Machines
                 .Include(m => m.Receipt)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (machine == null)
                 throw new ApiException(404, "Станка с таким ID не существует.");
-            _machinesContext.Machines.Remove(machine);
+            _context.Machines.Remove(machine);
             await Save();
         }
 
         public async Task<Machine> GetMachineByIdAsync(int id)
         {
-            Machine? machine = await _machinesContext.Machines
+            Machine? machine = await _context.Machines
                 .Include(m => m.Receipt)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (machine == null)
@@ -54,7 +52,7 @@ namespace SmallFactory.Repositories
 
         public async Task<IEnumerable<Machine>> GetMachinesAsync()
         {
-            List<Machine> machines = await _machinesContext.Machines
+            List<Machine> machines = await _context.Machines
                 .Include(m => m.Receipt)
                 .OrderBy(m => m.Id)
                 .ToListAsync();
@@ -63,7 +61,7 @@ namespace SmallFactory.Repositories
 
         public async Task<Machine> UpdateMachineAsync(int id, UpdateMachineDto updateMachineDto)
         {
-            Machine? machine = await _machinesContext.Machines
+            Machine? machine = await _context.Machines
                 .Include(m => m.Receipt)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (machine == null)
@@ -74,7 +72,7 @@ namespace SmallFactory.Repositories
             }
             if (updateMachineDto.ReceiptId != null)
             {
-                if (await _receiptsContext.Receipts.FirstOrDefaultAsync(r => r.Id == updateMachineDto.ReceiptId) == null)
+                if (await _context.Receipts.FirstOrDefaultAsync(r => r.Id == updateMachineDto.ReceiptId) == null)
                     throw new ApiException(404, "Рецепта с таким ID не существует.");
                 machine.ReceiptId = (int)updateMachineDto.ReceiptId;
             }
@@ -84,7 +82,7 @@ namespace SmallFactory.Repositories
 
         private async Task Save()
         {
-            int result = await _machinesContext.SaveChangesAsync();
+            int result = await _context.SaveChangesAsync();
             if (result == 0)
                 throw new ApiUnexpectedException();
         }
