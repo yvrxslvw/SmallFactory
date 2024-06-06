@@ -7,9 +7,9 @@ using SmallFactory.Models;
 
 namespace SmallFactory.Repositories
 {
-    public class FactoriesRepository(FactoriesContext factoriesContext) : IFactoriesRepository
+    public class FactoriesRepository(AppDbContext context) : IFactoriesRepository
     {
-        private readonly FactoriesContext _factoriesContext = factoriesContext;
+        private readonly AppDbContext _context = context;
 
         public async Task<Factory> CreateFactoryAsync(CreateFactoryDto createFactoryDto)
         {
@@ -20,14 +20,14 @@ namespace SmallFactory.Repositories
                 Name = createFactoryDto.Name,
                 Budget = 12000
             };
-            _factoriesContext.Factories.Add(factory);
+            _context.Factories.Add(factory);
             await Save();
             return factory;
         }
 
         public async Task DeleteFactoryAsync(int id)
         {
-            Factory? factory = await _factoriesContext.Factories
+            Factory? factory = await _context.Factories
                 .Include(f => f.ProductionChains)
                 .ThenInclude(pc => pc.Machines)
                 .ThenInclude(m => m.Receipt)
@@ -35,13 +35,13 @@ namespace SmallFactory.Repositories
                 .ThenInclude(s => s.Part)
                 .FirstOrDefaultAsync(f => f.Id == id);
             if (factory == null) throw new ApiException(404, "Завода с таким ID не существует.");
-            _factoriesContext.Factories.Remove(factory);
+            _context.Factories.Remove(factory);
             await Save();
         }
 
         public async Task<IEnumerable<Factory>> GetFactoriesAsync()
         {
-            List<Factory> factories = await _factoriesContext.Factories
+            List<Factory> factories = await _context.Factories
                 .Include(f => f.ProductionChains)
                 .ThenInclude(pc => pc.Machines)
                 .ThenInclude(m => m.Receipt)
@@ -54,7 +54,7 @@ namespace SmallFactory.Repositories
 
         public async Task<Factory> GetFactoryByIdAsync(int id)
         {
-            Factory? factory = await _factoriesContext.Factories
+            Factory? factory = await _context.Factories
                 .Include(f => f.ProductionChains)
                 .ThenInclude(pc => pc.Machines)
                 .ThenInclude(m => m.Receipt)
@@ -67,7 +67,7 @@ namespace SmallFactory.Repositories
 
         public async Task<Factory> UpdateFactoryAsync(int id, UpdateFactoryDto updateFactoryDto)
         {
-            Factory? factory = await _factoriesContext.Factories
+            Factory? factory = await _context.Factories
                 .Include(f => f.ProductionChains)
                 .ThenInclude(pc => pc.Machines)
                 .ThenInclude(m => m.Receipt)
@@ -85,21 +85,21 @@ namespace SmallFactory.Repositories
 
         private async Task<bool> IsFactoryExists(int id)
         {
-            Factory? factory = await _factoriesContext.Factories.FirstOrDefaultAsync(f => f.Id == id);
+            Factory? factory = await _context.Factories.FirstOrDefaultAsync(f => f.Id == id);
             if (factory == null) return false;
             else return true;
         }
 
         private async Task<bool> IsFactoryExists(string name)
         {
-            Factory? factory = await _factoriesContext.Factories.FirstOrDefaultAsync(f => f.Name == name);
+            Factory? factory = await _context.Factories.FirstOrDefaultAsync(f => f.Name == name);
             if (factory == null) return false;
             else return true;
         }
 
         private async Task Save()
         {
-            int result = await _factoriesContext.SaveChangesAsync();
+            int result = await _context.SaveChangesAsync();
             if (result == 0)
                 throw new ApiUnexpectedException();
         }

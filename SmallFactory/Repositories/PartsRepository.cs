@@ -7,9 +7,9 @@ using SmallFactory.Models;
 
 namespace SmallFactory.Repositories
 {
-    public class PartsRepository(PartsContext partsContext) : IPartsRepository
+    public class PartsRepository(AppDbContext context) : IPartsRepository
     {
-        private readonly PartsContext _partsContext = partsContext;
+        private readonly AppDbContext _context = context;
 
         public async Task<Part> CreatePartAsync(CreatePartDto createPartDto)
         {
@@ -19,23 +19,23 @@ namespace SmallFactory.Repositories
             {
                 Name = createPartDto.Name
             };
-            _partsContext.Parts.Add(part);
+            _context.Parts.Add(part);
             await Save();
             return part;
         }
 
         public async Task DeletePartAsync(int id)
         {
-            Part? part = await _partsContext.Parts.FirstOrDefaultAsync(p => p.Id == id);
+            Part? part = await _context.Parts.FirstOrDefaultAsync(p => p.Id == id);
             if (part == null)
                 throw new ApiException(404, "Детали с таким ID не существует.");
-            _partsContext.Parts.Remove(part);
+            _context.Parts.Remove(part);
             await Save();
         }
 
         public async Task<Part> GetPartByIdAsync(int id)
         {
-            Part? part = await _partsContext.Parts
+            Part? part = await _context.Parts
                 .FirstOrDefaultAsync(p => p.Id == id);
             if (part == null)
                 throw new ApiException(404, "Детали с таким ID не существует.");
@@ -44,7 +44,7 @@ namespace SmallFactory.Repositories
 
         public async Task<IEnumerable<Part>> GetPartsAsync()
         {
-            List<Part> parts = await _partsContext.Parts
+            List<Part> parts = await _context.Parts
                 .OrderBy(p => p.Id)
                 .ToListAsync();
             return parts;
@@ -52,7 +52,7 @@ namespace SmallFactory.Repositories
 
         public async Task<Part> UpdatePartAsync(int id, UpdatePartDto updatePartDto)
         {
-            Part? part = await _partsContext.Parts.FirstOrDefaultAsync(p => p.Id == id);
+            Part? part = await _context.Parts.FirstOrDefaultAsync(p => p.Id == id);
             if (part == null)
                 throw new ApiException(404, "Детали с таким ID не существует.");
             if (updatePartDto.Name == part.Name) return part;
@@ -65,14 +65,14 @@ namespace SmallFactory.Repositories
 
         private async Task<bool> IsPartExists(string name)
         {
-            Part? part = await _partsContext.Parts.FirstOrDefaultAsync(p => p.Name == name);
+            Part? part = await _context.Parts.FirstOrDefaultAsync(p => p.Name == name);
             if (part == null) return false;
             else return true;
         }
 
         private async Task Save()
         {
-            int result = await _partsContext.SaveChangesAsync();
+            int result = await _context.SaveChangesAsync();
             if (result == 0)
                 throw new ApiUnexpectedException();
         }

@@ -7,14 +7,13 @@ using SmallFactory.Models;
 
 namespace SmallFactory.Services
 {
-    public class ShopService(StoragesContext storagesContext, ShopItemsContext shopItemsContext) : IShopService
+    public class ShopService(AppDbContext context) : IShopService
     {
-        private readonly StoragesContext _storagesContext = storagesContext;
-        private readonly ShopItemsContext _shopItemsContext = shopItemsContext;
+        private readonly AppDbContext _context = context;
 
         public async Task<string> BuyPartAsync(BuyPartDto buyPartDto)
         {
-            Storage? storage = await _storagesContext.Storages
+            Storage? storage = await _context.Storages
                 .Include(s => s.Factory)
                 .Include(s => s.Part)
                 .ThenInclude(p => p.ShopItem)
@@ -39,13 +38,13 @@ namespace SmallFactory.Services
             shopItem.Count -= buyPartDto.Quantity;
             storage.Count += buyPartDto.Quantity;
 
-            await _storagesContext.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return $"Успешная покупка \"{shopItem.Part.Name}\" {buyPartDto.Quantity}шт на сумму ${price}.\nБаланс: ${factory.Budget}\nДеталей на складе: {storage.Count}";
         }
 
         public async Task ReplenishmentAsync()
         {
-            await _shopItemsContext.ShopItems.Include(si => si.Part).ForEachAsync(shopItem =>
+            await _context.ShopItems.Include(si => si.Part).ForEachAsync(shopItem =>
             {
                 DateTime last = shopItem.LastReplineshment;
                 DateTime now = DateTime.Now.ToUniversalTime();
@@ -55,12 +54,12 @@ namespace SmallFactory.Services
                 shopItem.LastReplineshment = DateTime.Now.ToUniversalTime();
                 Console.WriteLine($"[{DateTime.Now}] Replenishment \"{shopItem.Part.Name}\"");
             });
-            await _shopItemsContext.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task<string> SellPartAsync(SellPartDto sellPartDto)
         {
-            Storage? storage = await _storagesContext.Storages
+            Storage? storage = await _context.Storages
                 .Include(s => s.Factory)
                 .Include(s => s.Part)
                 .ThenInclude(p => p.ShopItem)
@@ -81,7 +80,7 @@ namespace SmallFactory.Services
             shopItem.Count += sellPartDto.Quantity;
             storage.Count -= sellPartDto.Quantity;
 
-            await _storagesContext.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return $"Успешная продажа \"{shopItem.Part.Name}\" {sellPartDto.Quantity}шт на сумму ${price}.\nБаланс: ${factory.Budget}\nДеталей на складе: {storage.Count}";
         }
     }
