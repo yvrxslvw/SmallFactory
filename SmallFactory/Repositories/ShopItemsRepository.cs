@@ -25,7 +25,7 @@ namespace SmallFactory.Repositories
                 Price = createShopItemDto.Price,
                 CoolDown = createShopItemDto.CoolDown,
                 Count = 0,
-                LastReplineshment = DateTime.Now.ToUniversalTime()
+                LastReplenishment = DateTime.Now.ToUniversalTime()
             };
             _context.ShopItems.Add(shopItem);
             await Save();

@@ -20,8 +20,8 @@ namespace SmallFactory.Models
         [Column("cooldown")]
         public int CoolDown { get; set; }
 
-        [Column("last_replineshment")]
-        public DateTime LastReplineshment { get; set; }
+        [Column("last_replenishment")]
+        public DateTime LastReplenishment { get; set; }
 
         public Part Part { get; set; }
     }

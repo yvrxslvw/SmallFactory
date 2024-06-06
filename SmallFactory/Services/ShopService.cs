@@ -46,12 +46,12 @@ namespace SmallFactory.Services
         {
             await _context.ShopItems.Include(si => si.Part).ForEachAsync(shopItem =>
             {
-                DateTime last = shopItem.LastReplineshment;
+                DateTime last = shopItem.LastReplenishment;
                 DateTime now = DateTime.Now.ToUniversalTime();
                 double span = Math.Round(now.Subtract(last).TotalMinutes, 1);
                 if (span < shopItem.CoolDown) return;
                 shopItem.Count += 1;
-                shopItem.LastReplineshment = DateTime.Now.ToUniversalTime();
+                shopItem.LastReplenishment = DateTime.Now.ToUniversalTime();
                 Console.WriteLine($"[{DateTime.Now}] Replenishment \"{shopItem.Part.Name}\"");
             });
             await _context.SaveChangesAsync();
