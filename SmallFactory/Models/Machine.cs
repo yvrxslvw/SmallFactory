@@ -9,6 +9,13 @@ namespace SmallFactory.Models
         MANUFACTURER
     }
 
+    public enum MachineStatus
+    {
+        ERROR,
+        WAITING,
+        PROCESSING
+    }
+
     [Table("machines")]
     public class Machine
     {
@@ -20,6 +27,9 @@ namespace SmallFactory.Models
 
         [Column("type")]
         public MachineTypes Type { get; set; }
+
+        [Column("status")]
+        public MachineStatus Status { get; set; }
 
         [Column("receipt_id")]
         public int ReceiptId { get; set; }
