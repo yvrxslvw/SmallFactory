@@ -90,6 +90,9 @@ namespace SmallFactory.Services
                 part4Storage.Count -= requiredPart4;
             }
 
+            if (manufacturedPartStorage.Count + 1 > manufacturedPartStorage.Max)
+                throw new ApiException(403, "Склад готовых деталей переполнен.");
+
             await Task.Delay(60 / receipt.ProductionRate * 1000);
             manufacturedPartStorage.Count += 1;
             await Save();
@@ -104,7 +107,10 @@ namespace SmallFactory.Services
                 {
                     await Task.Run(async () => await MakeCycleAsync(machine.Id));
                 }
-                catch (Exception) { }
+                catch (ApiException exc)
+                {
+                    Console.WriteLine($"[{DateTime.Now} | MANUFACTURING] {exc.Message}");
+                }
             }
         }
 

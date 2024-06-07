@@ -52,7 +52,7 @@ namespace SmallFactory.Services
                 if (span < shopItem.CoolDown || shopItem.CoolDown == 0) return;
                 shopItem.Count += 1;
                 shopItem.LastReplenishment = DateTime.Now.ToUniversalTime();
-                Console.WriteLine($"[{DateTime.Now}] Replenishment \"{shopItem.Part.Name}\"");
+                Console.WriteLine($"[{DateTime.Now} | REPLENISHMENT] \"{shopItem.Part.Name}\"");
             });
             await _context.SaveChangesAsync();
         }
