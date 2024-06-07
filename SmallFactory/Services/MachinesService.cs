@@ -10,7 +10,7 @@ namespace SmallFactory.Services
     {
         private readonly AppDbContext _context = context;
 
-        public async Task<string> MakeCycleAsync(int machineId)
+        public async Task MakeCycleAsync(int machineId)
         {
             Machine? machine = await _context.Machines
                 .Include(m => m.Receipt)
@@ -93,7 +93,19 @@ namespace SmallFactory.Services
             await Task.Delay(60 / receipt.ProductionRate * 1000);
             manufacturedPartStorage.Count += 1;
             await Save();
-            return $"Деталь произведена. Количество на складе: {manufacturedPartStorage.Count}шт.";
+        }
+
+        public async Task Manufacturing()
+        {
+            List<Machine> machines = await _context.Machines.OrderBy(m => m.Id).ToListAsync();
+            foreach (Machine machine in machines)
+            {
+                try
+                {
+                    await Task.Run(async () => await MakeCycleAsync(machine.Id));
+                }
+                catch (Exception) { }
+            }
         }
 
         private async Task Save()

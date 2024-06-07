@@ -49,7 +49,7 @@ namespace SmallFactory.Services
                 DateTime last = shopItem.LastReplenishment;
                 DateTime now = DateTime.Now.ToUniversalTime();
                 double span = Math.Round(now.Subtract(last).TotalMinutes, 1);
-                if (span < shopItem.CoolDown) return;
+                if (span < shopItem.CoolDown || shopItem.CoolDown == 0) return;
                 shopItem.Count += 1;
                 shopItem.LastReplenishment = DateTime.Now.ToUniversalTime();
                 Console.WriteLine($"[{DateTime.Now}] Replenishment \"{shopItem.Part.Name}\"");

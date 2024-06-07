@@ -41,6 +41,10 @@ namespace SmallFactory
             builder.Services.AddSingleton(new JobSchedule(
                 jobType: typeof(ReplenishmentTask),
                 cronExpression: "0/30 * * * * ?"));
+            builder.Services.AddSingleton<ManufacturingTask>();
+            builder.Services.AddSingleton(new JobSchedule(
+                jobType: typeof(ManufacturingTask),
+                cronExpression: "0/1 * * * * ?"));
 
             builder.Services.AddHostedService<QuartzHostedService>();
             builder.Services.AddControllers();

@@ -2,6 +2,7 @@
 {
     public interface IMachinesService
     {
-        public Task<string> MakeCycleAsync(int machineId);
+        public Task MakeCycleAsync(int machineId);
+        public Task Manufacturing();
     }
 }
