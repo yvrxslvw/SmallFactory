@@ -43,6 +43,20 @@ namespace SmallFactory.Repositories
         {
             ProductionChain? productionChain = await _context.ProductionChains
                 .Include(pc => pc.Machines)
+                .ThenInclude(m => m.Receipt)
+                .ThenInclude(r => r.ManufacturedPart)
+                .Include(pc => pc.Machines)
+                .ThenInclude(m => m.Receipt)
+                .ThenInclude(r => r.Material1Part)
+                .Include(pc => pc.Machines)
+                .ThenInclude(m => m.Receipt)
+                .ThenInclude(r => r.Material2Part)
+                .Include(pc => pc.Machines)
+                .ThenInclude(m => m.Receipt)
+                .ThenInclude(r => r.Material3Part)
+                .Include(pc => pc.Machines)
+                .ThenInclude(m => m.Receipt)
+                .ThenInclude(r => r.Material4Part)
                 .FirstOrDefaultAsync(pc => pc.Id == id);
             if (productionChain == null)
                 throw new ApiException(404, "Производственной цепочки с таким ID не существует.");
@@ -53,6 +67,20 @@ namespace SmallFactory.Repositories
         {
             List<ProductionChain> productionChains = await _context.ProductionChains
                 .Include(pc => pc.Machines)
+                .ThenInclude(m => m.Receipt)
+                .ThenInclude(r => r.ManufacturedPart)
+                .Include(pc => pc.Machines)
+                .ThenInclude(m => m.Receipt)
+                .ThenInclude(r => r.Material1Part)
+                .Include(pc => pc.Machines)
+                .ThenInclude(m => m.Receipt)
+                .ThenInclude(r => r.Material2Part)
+                .Include(pc => pc.Machines)
+                .ThenInclude(m => m.Receipt)
+                .ThenInclude(r => r.Material3Part)
+                .Include(pc => pc.Machines)
+                .ThenInclude(m => m.Receipt)
+                .ThenInclude(r => r.Material4Part)
                 .OrderBy(pc => pc.Id)
                 .ToListAsync();
             return productionChains;

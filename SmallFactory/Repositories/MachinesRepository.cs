@@ -54,6 +54,15 @@ namespace SmallFactory.Repositories
         {
             List<Machine> machines = await _context.Machines
                 .Include(m => m.Receipt)
+                .ThenInclude(r => r.ManufacturedPart)
+                .Include(m => m.Receipt)
+                .ThenInclude(r => r.Material1Part)
+                .Include(m => m.Receipt)
+                .ThenInclude(r => r.Material2Part)
+                .Include(m => m.Receipt)
+                .ThenInclude(r => r.Material3Part)
+                .Include(m => m.Receipt)
+                .ThenInclude(r => r.Material4Part)
                 .OrderBy(m => m.Id)
                 .ToListAsync();
             return machines;
@@ -63,6 +72,15 @@ namespace SmallFactory.Repositories
         {
             Machine? machine = await _context.Machines
                 .Include(m => m.Receipt)
+                .ThenInclude(r => r.ManufacturedPart)
+                .Include(m => m.Receipt)
+                .ThenInclude(r => r.Material1Part)
+                .Include(m => m.Receipt)
+                .ThenInclude(r => r.Material2Part)
+                .Include(m => m.Receipt)
+                .ThenInclude(r => r.Material3Part)
+                .Include(m => m.Receipt)
+                .ThenInclude(r => r.Material4Part)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (machine == null)
                 throw new ApiException(404, "Станка с таким ID не существует.");

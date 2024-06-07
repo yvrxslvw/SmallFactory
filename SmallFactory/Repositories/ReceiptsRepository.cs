@@ -25,6 +25,14 @@ namespace SmallFactory.Repositories
                 throw new ApiException(404, "Детали для материала 4 не существует.");
             if (createReceiptDto.ProductionRate < 1)
                 throw new ApiException(400, "Некорректное количество деталей в минуту.");
+            if (createReceiptDto.Material1Count < 1)
+                throw new ApiException(400, "Некорректное количество первого материала.");
+            if (createReceiptDto.Material2Count < 1)
+                throw new ApiException(400, "Некорректное количество второго материала.");
+            if (createReceiptDto.Material3Count < 1)
+                throw new ApiException(400, "Некорректное количество третьего материала.");
+            if (createReceiptDto.Material4Count < 1)
+                throw new ApiException(400, "Некорректное количество четвёртого материала.");
             Receipt receipt = new Receipt()
             {
                 ProductionType = (MachineTypes)createReceiptDto.ProductionType,
@@ -34,6 +42,10 @@ namespace SmallFactory.Repositories
                 Material3PartId = createReceiptDto.Material3Id,
                 Material4PartId = createReceiptDto.Material4Id,
                 ProductionRate = createReceiptDto.ProductionRate,
+                Material1Count = createReceiptDto.Material1Count,
+                Material2Count = createReceiptDto.Material2Count,
+                Material3Count = createReceiptDto.Material3Count,
+                Material4Count = createReceiptDto.Material4Count,
             };
             _context.Receipts.Add(receipt);
             await Save();
