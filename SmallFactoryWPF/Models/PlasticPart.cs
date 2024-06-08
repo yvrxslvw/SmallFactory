@@ -2,6 +2,6 @@
 {
     public class PlasticPart : Part
     {
-        public PlasticPart() : base("Пластик") { }
+        public PlasticPart() : base("Пластик", 6, 1) { }
     }
 }

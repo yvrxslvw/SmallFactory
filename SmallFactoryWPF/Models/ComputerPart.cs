@@ -2,6 +2,6 @@
 {
     public class ComputerPart : Part
     {
-        public ComputerPart() : base("Компьютер") { }
+        public ComputerPart() : base("Компьютер", 42, 0) { }
     }
 }

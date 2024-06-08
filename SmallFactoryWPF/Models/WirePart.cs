@@ -2,6 +2,6 @@
 {
     public class WirePart : Part
     {
-        public WirePart() : base("Проволока") { }
+        public WirePart() : base("Проволока", 7, 1) { }
     }
 }

@@ -2,6 +2,6 @@
 {
     public class CopperSheetPart : Part
     {
-        public CopperSheetPart() : base("Медный Лист") { }
+        public CopperSheetPart() : base("Медный Лист", 10, 1) { }
     }
 }

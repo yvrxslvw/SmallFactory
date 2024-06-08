@@ -2,6 +2,6 @@
 {
     public class CablePart : Part
     {
-        public CablePart() : base("Кабель") { }
+        public CablePart() : base("Кабель", 8, 0) { }
     }
 }
