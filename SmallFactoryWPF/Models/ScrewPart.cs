@@ -2,6 +2,12 @@
 {
     public class ScrewPart : Part
     {
-        public ScrewPart() : base("Винт", 2, 0) { }
+        public static decimal ShopPrice = 2;
+
+        public static double ShopCooldown = 0;
+
+        public static int ShopCount = 0;
+
+        public ScrewPart() : base("Винт") { }
     }
 }

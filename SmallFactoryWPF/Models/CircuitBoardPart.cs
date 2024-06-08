@@ -2,6 +2,12 @@
 {
     public class CircuitBoardPart : Part
     {
-        public CircuitBoardPart() : base("Печатная Плата", 18, 0) { }
+        public static decimal ShopPrice = 18;
+
+        public static double ShopCooldown = 0;
+
+        public static int ShopCount = 0;
+
+        public CircuitBoardPart() : base("Печатная Плата") { }
     }
 }

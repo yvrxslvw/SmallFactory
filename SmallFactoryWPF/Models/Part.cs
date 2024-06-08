@@ -4,18 +4,9 @@
     {
         public readonly string Name;
 
-        public static decimal ShopPrice;
-
-        public static double ShopCooldown;
-
-        public static int ShopCount;
-
-        protected Part(string name, decimal shopPrice, double shopCooldown)
+        protected Part(string name)
         {
             Name = name;
-            ShopPrice = shopPrice;
-            ShopCooldown = shopCooldown;
-            ShopCount = 0;
         }
     }
 }

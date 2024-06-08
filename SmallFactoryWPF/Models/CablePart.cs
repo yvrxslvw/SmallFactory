@@ -2,6 +2,12 @@
 {
     public class CablePart : Part
     {
-        public CablePart() : base("Кабель", 8, 0) { }
+        public static decimal ShopPrice = 8;
+
+        public static double ShopCooldown = 0;
+
+        public static int ShopCount = 0;
+
+        public CablePart() : base("Кабель") { }
     }
 }

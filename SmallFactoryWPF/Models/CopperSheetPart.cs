@@ -2,6 +2,12 @@
 {
     public class CopperSheetPart : Part
     {
-        public CopperSheetPart() : base("Медный Лист", 10, 1) { }
+        public static decimal ShopPrice = 10;
+
+        public static double ShopCooldown = 1;
+
+        public static int ShopCount = 0;
+
+        public CopperSheetPart() : base("Медный Лист") { }
     }
 }
