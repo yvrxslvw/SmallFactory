@@ -1,30 +1,27 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SmallFactoryWPF.Models
 {
     public class ConstructorMachine : Machine
     {
-        public readonly List<Part> Input1;
+        public ConstructorMachine(ConstructorReceipt receipt) : base(receipt) { }
 
-        public ConstructorMachine(ConstructorReceipt receipt) : base(receipt)
-        {
-            Input1 = new List<Part>();
-        }
-
-        protected override async Task Cycle()
+        public override async Task Cycle()
         {
             ConstructorReceipt receipt = Receipt as ConstructorReceipt;
-            int input1Required = (int)(60 / receipt.Material1Rate);
+            int input1Required = (int)(receipt.Material1Rate / receipt.ProductionRate);
+            List<Part> materials1 = Input.Where(p => p.Name == receipt.Material1.Name).ToList();
 
-            if (Input1.Count < input1Required)
+            if (materials1.Count < input1Required)
             {
                 Status = MachineStatus.ERROR;
                 ErrorMessage = $"Недостаточно \"{receipt.Material1.Name}\".";
                 return;
             }
 
-            Input1.RemoveRange(0, input1Required);
+            for (int i = 0; i < input1Required; i++) Input.Remove(materials1[i]);
             await base.Cycle();
         }
     }

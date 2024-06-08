@@ -1,41 +1,36 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SmallFactoryWPF.Models
 {
     public class AssemblerMachine : Machine
     {
-        public readonly List<Part> Input1;
+        public AssemblerMachine(AssemblerReceipt receipt) : base(receipt) { }
 
-        public readonly List<Part> Input2;
-
-        public AssemblerMachine(AssemblerReceipt receipt) : base(receipt)
-        {
-            Input1 = new List<Part>();
-            Input2 = new List<Part>();
-        }
-
-        protected override async Task Cycle()
+        public override async Task Cycle()
         {
             AssemblerReceipt receipt = Receipt as AssemblerReceipt;
-            int input1Required = (int)(60 / receipt.Material1Rate);
-            int input2Required = (int)(60 / receipt.Material2Rate);
+            int input1Required = (int)(receipt.Material1Rate / receipt.ProductionRate);
+            int input2Required = (int)(receipt.Material2Rate / receipt.ProductionRate);
+            List<Part> materials1 = Input.Where(p => p.Name == receipt.Material1.Name).ToList();
+            List<Part> materials2 = Input.Where(p => p.Name == receipt.Material2.Name).ToList();
 
-            if (Input1.Count < input1Required)
+            if (materials1.Count < input1Required)
             {
                 Status = MachineStatus.ERROR;
-                ErrorMessage = $"Недостаточно {receipt.Material1.Name}.";
+                ErrorMessage = $"Недостаточно \"{receipt.Material1.Name}\".";
                 return;
             }
-            else if (Input2.Count < input2Required)
+            else if (materials2.Count < input2Required)
             {
                 Status = MachineStatus.ERROR;
-                ErrorMessage = $"Недостаточно {receipt.Material2.Name}.";
+                ErrorMessage = $"Недостаточно \"{receipt.Material2.Name}\".";
                 return;
             }
 
-            Input1.RemoveRange(0, input1Required);
-            Input2.RemoveRange(0, input2Required);
+            for (int i = 0; i < input1Required; i++) Input.Remove(materials1[i]);
+            for (int i = 0; i < input2Required; i++) Input.Remove(materials2[i]);
             await base.Cycle();
         }
     }

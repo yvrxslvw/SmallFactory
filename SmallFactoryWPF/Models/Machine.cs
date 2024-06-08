@@ -16,6 +16,8 @@ namespace SmallFactoryWPF.Models
 
         public readonly Receipt Receipt;
 
+        public readonly List<Part> Input;
+
         public readonly List<Part> Output;
 
         public string ErrorMessage = string.Empty;
@@ -24,10 +26,11 @@ namespace SmallFactoryWPF.Models
         {
             Status = MachineStatus.WAITING;
             Receipt = receipt;
+            Input = new List<Part>();
             Output = new List<Part>();
         }
 
-        protected virtual async Task Cycle()
+        public virtual async Task Cycle()
         {
             Status = MachineStatus.PROCESSING;
             await Task.Delay((int)(60 / Receipt.ProductionRate * 1000));
