@@ -5,8 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SmallFactoryWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Loaded="Window_Loaded"
+        Title="Small Factory" Height="600" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
-        
+        <TabControl>
+            <TabItem Header="Завод">
+                <Frame Name="FFactory" />
+            </TabItem>
+        </TabControl>
+
     </Grid>
 </Window>

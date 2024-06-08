@@ -2,10 +2,26 @@
 
 namespace SmallFactoryWPF.Models
 {
-    internal class Storage
+    public class Storage<T>
     {
-        public IEnumerable<Part> Parts { get; set; }
+        private readonly List<T> Parts;
 
-        public int Max { get; set; }
+        public readonly int Max;
+
+        public Storage(int max)
+        {
+            Parts = new List<T>();
+            Max = max;
+        }
+
+        public void Add(T part)
+        {
+            Parts.Add(part);
+        }
+
+        public List<T> GetParts()
+        {
+            return Parts;
+        }
     }
 }

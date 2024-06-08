@@ -1,24 +1,38 @@
-﻿namespace SmallFactoryWPF.Models
-{
-    public enum ProductionType
-    {
-        CONSTRUCTOR,
-        ASSEMBLER,
-        MANUFACTURER
-    }
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
+namespace SmallFactoryWPF.Models
+{
     public enum MachineStatus
     {
+        ERROR,
         WAITING,
         PROCESSING
     }
 
-    internal class Machine
+    public abstract class Machine
     {
-        public ProductionType MachineType { get; set; }
+        public MachineStatus Status;
 
-        public Receipt Receipt { get; set; }
+        public readonly Receipt Receipt;
 
-        public MachineStatus Status { get; set; }
+        public readonly List<Part> Output;
+
+        public string ErrorMessage = string.Empty;
+
+        protected Machine(Receipt receipt)
+        {
+            Status = MachineStatus.WAITING;
+            Receipt = receipt;
+            Output = new List<Part>();
+        }
+
+        protected virtual async Task Cycle()
+        {
+            Status = MachineStatus.PROCESSING;
+            await Task.Delay((int)(60 / Receipt.ProductionRate * 1000));
+            Output.Add(Receipt.ResultPart);
+            Status = MachineStatus.WAITING;
+        }
     }
 }

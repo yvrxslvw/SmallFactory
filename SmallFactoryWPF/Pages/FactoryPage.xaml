@@ -1,0 +1,19 @@
+﻿<Page x:Class="SmallFactoryWPF.Pages.FactoryPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SmallFactoryWPF.Pages"
+      mc:Ignorable="d" 
+      Loaded="Page_Loaded"
+      FontSize="18">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <Label Grid.Row="0" FontSize="24" HorizontalAlignment="Center" FontWeight="Bold">Small Factory</Label>
+        <Label Grid.Row="1" Name="LBudget" />
+    </Grid>
+</Page>

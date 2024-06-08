@@ -1,11 +1,12 @@
 ﻿namespace SmallFactoryWPF.Models
 {
-    internal class Part
+    public abstract class Part
     {
-        public string Name { get; set; }
+        public readonly string Name;
 
-        public decimal Price { get; set; }
-
-        public double Cooldown { get; set; }
+        protected Part(string name)
+        {
+            Name = name;
+        }
     }
 }

@@ -67,14 +67,37 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Pages\FactoryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Factory.cs" />
+    <Compile Include="Models\AssemblerMachine.cs" />
+    <Compile Include="Models\AssemblerReceipt.cs" />
+    <Compile Include="Models\CablePart.cs" />
+    <Compile Include="Models\CableReceipt.cs" />
+    <Compile Include="Models\CircuitBoardPart.cs" />
+    <Compile Include="Models\CircuitBoardReceipt.cs" />
+    <Compile Include="Models\ComputerPart.cs" />
+    <Compile Include="Models\ComputerReceipt.cs" />
+    <Compile Include="Models\ConstructorMachine.cs" />
+    <Compile Include="Models\CopperSheetPart.cs" />
+    <Compile Include="Models\IronRodPart.cs" />
     <Compile Include="Models\Machine.cs" />
+    <Compile Include="Models\ManufacturerMachine.cs" />
+    <Compile Include="Models\ManufacturerReceipt.cs" />
     <Compile Include="Models\Part.cs" />
-    <Compile Include="Models\ProductionChain.cs" />
+    <Compile Include="Models\PlasticPart.cs" />
+    <Compile Include="Models\ConstructorReceipt.cs" />
     <Compile Include="Models\Receipt.cs" />
+    <Compile Include="Models\ScrewPart.cs" />
+    <Compile Include="Models\ScrewReceipt.cs" />
     <Compile Include="Models\Storage.cs" />
+    <Compile Include="Models\WirePart.cs" />
+    <Compile Include="Pages\FactoryPage.xaml.cs">
+      <DependentUpon>FactoryPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -100,5 +123,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
