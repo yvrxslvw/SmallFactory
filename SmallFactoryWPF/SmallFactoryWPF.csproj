@@ -73,6 +73,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Factory.cs" />
     <Compile Include="Models\Machines\AssemblerMachine.cs" />
     <Compile Include="Models\Receipts\AssemblerReceipt.cs" />
     <Compile Include="Models\Parts\CablePart.cs" />

@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:SmallFactoryWPF.Pages"
       mc:Ignorable="d" 
       Loaded="Page_Loaded"
-      FontSize="18">
+      FontSize="18" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />

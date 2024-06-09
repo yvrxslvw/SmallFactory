@@ -7,8 +7,8 @@ namespace SmallFactoryWPF
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
             ShopReplenishment();
+            base.OnStartup(e);
         }
 
         private void ShopReplenishment()
