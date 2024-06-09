@@ -6,10 +6,13 @@
 
         public readonly double ProductionRate;
 
-        protected Receipt(Part resultPart, double productionRate)
+        public readonly double CycleRate;
+
+        protected Receipt(Part resultPart, double productionRate, double cycleRate)
         {
             ResultPart = resultPart;
             ProductionRate = productionRate;
+            CycleRate = cycleRate;
         }
     }
 }

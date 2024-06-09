@@ -1,36 +1,50 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace SmallFactoryWPF.Models
 {
     public class AssemblerMachine : Machine
     {
-        public AssemblerMachine(AssemblerReceipt receipt) : base(receipt) { }
+        public Part Input1Part;
+
+        public Part Input2Part;
+
+        public AssemblerMachine(ConstructorReceipt receipt, ref Part input1Part, ref Part input2Part, ref Part outputPart) : base(receipt, ref outputPart)
+        {
+            Input1Part = input1Part;
+            Input2Part = input2Part;
+        }
 
         public override async Task Cycle()
         {
             AssemblerReceipt receipt = Receipt as AssemblerReceipt;
-            int input1Required = (int)(receipt.Material1Rate / receipt.ProductionRate);
-            int input2Required = (int)(receipt.Material2Rate / receipt.ProductionRate);
-            List<Part> materials1 = Input.Where(p => p.Name == receipt.Material1.Name).ToList();
-            List<Part> materials2 = Input.Where(p => p.Name == receipt.Material2.Name).ToList();
 
-            if (materials1.Count < input1Required)
+            if (receipt.Material1.Name != Input1Part.Name)
+            {
+                Status = MachineStatus.ERROR;
+                ErrorMessage = $"Деталь 1 не совпадает с рецептом.";
+                return;
+            }
+            else if (receipt.Material2.Name != Input2Part.Name)
+            {
+                Status = MachineStatus.ERROR;
+                ErrorMessage = $"Деталь 2 не совпадает с рецептом.";
+                return;
+            }
+            if (Input1Part.StorageCount < receipt.Material1Required)
             {
                 Status = MachineStatus.ERROR;
                 ErrorMessage = $"Недостаточно \"{receipt.Material1.Name}\".";
                 return;
             }
-            else if (materials2.Count < input2Required)
+            else if (Input2Part.StorageCount < receipt.Material2Required)
             {
                 Status = MachineStatus.ERROR;
                 ErrorMessage = $"Недостаточно \"{receipt.Material2.Name}\".";
                 return;
             }
 
-            for (int i = 0; i < input1Required; i++) Input.Remove(materials1[i]);
-            for (int i = 0; i < input2Required; i++) Input.Remove(materials2[i]);
+            Input1Part.StorageCount -= receipt.Material1Required;
+            Input2Part.StorageCount -= receipt.Material2Required;
             await base.Cycle();
         }
     }

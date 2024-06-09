@@ -74,6 +74,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Pages\MachinesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\ShopPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -90,6 +94,9 @@
     <Compile Include="Models\Part.cs" />
     <Compile Include="Models\Receipts\ConstructorReceipt.cs" />
     <Compile Include="Models\Receipt.cs" />
+    <Compile Include="Pages\MachinesPage.xaml.cs">
+      <DependentUpon>MachinesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ShopPage.xaml.cs">
       <DependentUpon>ShopPage.xaml</DependentUpon>
     </Compile>

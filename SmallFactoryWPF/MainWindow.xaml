@@ -13,7 +13,8 @@
             <TabItem Header="Магазин">
                 <Frame Name="FShop" />
             </TabItem>
-            <TabItem Header="test">
+            <TabItem Header="Станки">
+                <Frame Name="FMachines" />
             </TabItem>
         </TabControl>
     </Grid>

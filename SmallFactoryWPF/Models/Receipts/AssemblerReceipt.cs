@@ -1,27 +1,23 @@
 ﻿namespace SmallFactoryWPF.Models
 {
-    public abstract class AssemblerReceipt : Receipt
+    public class AssemblerReceipt : ConstructorReceipt
     {
-        public readonly Part Material1;
 
         public readonly Part Material2;
 
-        public readonly double Material1Rate;
+        public readonly int Material2Required;
 
-        public readonly double Material2Rate;
-
-        protected AssemblerReceipt(
+        public AssemblerReceipt(
             Part material1,
             Part material2,
-            double material1Rate,
-            double material2Rate,
+            int material1Required,
+            int material2Required,
             Part resultPart,
-            double productionRate) : base(resultPart, productionRate)
+            double productionRate,
+            double cycleRate) : base(material1, material1Required, resultPart, productionRate, cycleRate)
         {
-            Material1 = material1;
             Material2 = material2;
-            Material1Rate = material1Rate;
-            Material2Rate = material2Rate;
+            Material2Required = material2Required;
         }
     }
 }

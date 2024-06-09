@@ -17,6 +17,11 @@ namespace SmallFactoryWPF
         private Part CablePart;
         private Part ComputerPart;
 
+        private ConstructorReceipt ScrewReceipt;
+        private AssemblerReceipt CircuitBoardReceipt;
+        private ConstructorReceipt CableReceipt;
+        private ManufacturerReceipt ComputerReceipt;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -25,6 +30,7 @@ namespace SmallFactoryWPF
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             InitializeParts();
+            InitializeReceipts();
 
             FShop.Navigate(new ShopPage(ref SmallFactory,
                                         ref IronRodPart,
@@ -35,6 +41,7 @@ namespace SmallFactoryWPF
                                         ref CircuitBoardPart,
                                         ref CablePart,
                                         ref ComputerPart));
+            FMachines.Navigate(new MachinesPage(ScrewReceipt, ref IronRodPart, ref ScrewPart));
         }
 
         private void InitializeParts()
@@ -56,6 +63,14 @@ namespace SmallFactoryWPF
             CircuitBoardPart.Replenishment();
             CablePart.Replenishment();
             ComputerPart.Replenishment();
+        }
+
+        private void InitializeReceipts()
+        {
+            ScrewReceipt = new ConstructorReceipt(IronRodPart, 4, ScrewPart, 130, 6);
+            CircuitBoardReceipt = new AssemblerReceipt(CopperSheetPart, PlasticPart, 8, 16, CircuitBoardPart, 25, 8);
+            CableReceipt = new ConstructorReceipt(WirePart, 2, CablePart, 22.5, 2);
+            ComputerReceipt = new ManufacturerReceipt(ScrewPart, CircuitBoardPart, CablePart, PlasticPart, 52, 10, 9, 18, ComputerPart, 2.5, 24);
         }
     }
 }

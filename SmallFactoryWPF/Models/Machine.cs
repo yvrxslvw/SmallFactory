@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace SmallFactoryWPF.Models
@@ -10,32 +10,62 @@ namespace SmallFactoryWPF.Models
         PROCESSING
     }
 
-    public abstract class Machine
+    public abstract class Machine : INotifyPropertyChanged
     {
-        public MachineStatus Status;
+        private MachineStatus status;
+
+        public MachineStatus Status
+        {
+            get { return status; }
+            set
+            {
+                if (status != value)
+                {
+                    status = value;
+                    OnPropertyChanged(nameof(Status));
+                }
+            }
+        }
+
+        public Part OutputPart;
 
         public readonly Receipt Receipt;
 
-        public readonly List<Part> Input;
+        private string errorMessage = string.Empty;
 
-        public readonly List<Part> Output;
+        public string ErrorMessage
+        {
+            get { return errorMessage; }
+            set
+            {
+                if (errorMessage != value)
+                {
+                    errorMessage = value;
+                    OnPropertyChanged(nameof(ErrorMessage));
+                }
+            }
+        }
 
-        public string ErrorMessage = string.Empty;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        protected Machine(Receipt receipt)
+        protected Machine(Receipt receipt, ref Part outputPart)
         {
             Status = MachineStatus.WAITING;
             Receipt = receipt;
-            Input = new List<Part>();
-            Output = new List<Part>();
+            OutputPart = outputPart;
         }
 
         public virtual async Task Cycle()
         {
             Status = MachineStatus.PROCESSING;
-            await Task.Delay((int)(60 / Receipt.ProductionRate * 1000));
-            Output.Add(Receipt.ResultPart);
+            await Task.Delay((int)(Receipt.CycleRate * 1000));
+            OutputPart.StorageCount += (int)(Receipt.ProductionRate / 60 * Receipt.CycleRate);
             Status = MachineStatus.WAITING;
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

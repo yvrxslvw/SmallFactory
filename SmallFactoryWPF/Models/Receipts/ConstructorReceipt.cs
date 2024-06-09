@@ -1,19 +1,20 @@
 ﻿namespace SmallFactoryWPF.Models
 {
-    public abstract class ConstructorReceipt : Receipt
+    public class ConstructorReceipt : Receipt
     {
         public readonly Part Material1;
 
-        public readonly double Material1Rate;
+        public readonly int Material1Required;
 
-        protected ConstructorReceipt(
+        public ConstructorReceipt(
             Part material1,
-            double material1Rate,
+            int material1Required,
             Part resultPart,
-            double productionRate) : base(resultPart, productionRate)
+            double productionRate,
+            double cycleRate) : base(resultPart, productionRate, cycleRate)
         {
             Material1 = material1;
-            Material1Rate = material1Rate;
+            Material1Required = material1Required;
         }
     }
 }
