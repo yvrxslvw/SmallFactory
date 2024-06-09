@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="SmallFactoryWPF.Controls.ShopItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SmallFactoryWPF.Controls"
+             mc:Ignorable="d" 
+             FontSize="18"
+             Loaded="UserControl_Loaded">
+    <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5" Margin="0 10 0 10">
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0" Name="LPartName" VerticalAlignment="Center" />
+            <Label Grid.Column="1" Name="LPartPrice" VerticalAlignment="Center" />
+            <Label Grid.Column="2" VerticalAlignment="Center" Content="{Binding ShopCount, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="В магазине: {0}" />
+            <Label Grid.Column="3" VerticalAlignment="Center" Content="{Binding StorageCount, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="На складе: {0}" />
+
+            <Grid Grid.Column="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Button Grid.Row="0" Name="BBuyPart" Click="BBuyPart_Click" Margin="0 0 0 10">Купить</Button>
+                <Button Grid.Row="1" Name="BSellPart" Click="BSellPart_Click">Продать</Button>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

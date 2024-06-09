@@ -10,11 +10,10 @@
         Title="Small Factory" Height="600" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <TabControl>
-            <TabItem Header="Завод">
-                <Frame Name="FFactory" />
-            </TabItem>
             <TabItem Header="Магазин">
                 <Frame Name="FShop" />
+            </TabItem>
+            <TabItem Header="test">
             </TabItem>
         </TabControl>
     </Grid>

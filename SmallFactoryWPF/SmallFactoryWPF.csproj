@@ -55,6 +55,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\ShopItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -63,11 +67,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\ShopItem.xaml.cs">
+      <DependentUpon>ShopItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Pages\FactoryPage.xaml">
+    <Page Include="Pages\ShopPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -76,28 +83,15 @@
     <Compile Include="Models\Factory.cs" />
     <Compile Include="Models\Machines\AssemblerMachine.cs" />
     <Compile Include="Models\Receipts\AssemblerReceipt.cs" />
-    <Compile Include="Models\Parts\CablePart.cs" />
-    <Compile Include="Models\Receipts\CableReceipt.cs" />
-    <Compile Include="Models\Parts\CircuitBoardPart.cs" />
-    <Compile Include="Models\Receipts\CircuitBoardReceipt.cs" />
-    <Compile Include="Models\Parts\ComputerPart.cs" />
-    <Compile Include="Models\Receipts\ComputerReceipt.cs" />
     <Compile Include="Models\Machines\ConstructorMachine.cs" />
-    <Compile Include="Models\Parts\CopperSheetPart.cs" />
-    <Compile Include="Models\Parts\IronRodPart.cs" />
     <Compile Include="Models\Machine.cs" />
     <Compile Include="Models\Machines\ManufacturerMachine.cs" />
     <Compile Include="Models\Receipts\ManufacturerReceipt.cs" />
     <Compile Include="Models\Part.cs" />
-    <Compile Include="Models\Parts\PlasticPart.cs" />
     <Compile Include="Models\Receipts\ConstructorReceipt.cs" />
     <Compile Include="Models\Receipt.cs" />
-    <Compile Include="Models\Parts\ScrewPart.cs" />
-    <Compile Include="Models\Receipts\ScrewReceipt.cs" />
-    <Compile Include="Models\Storage.cs" />
-    <Compile Include="Models\Parts\WirePart.cs" />
-    <Compile Include="Pages\FactoryPage.xaml.cs">
-      <DependentUpon>FactoryPage.xaml</DependentUpon>
+    <Compile Include="Pages\ShopPage.xaml.cs">
+      <DependentUpon>ShopPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
