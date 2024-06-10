@@ -1,26 +1,32 @@
-﻿using SmallFactoryWPF.Models;
+﻿using SmallFactoryWPF.Controls;
+using SmallFactoryWPF.Models;
 using System.Windows.Controls;
 
 namespace SmallFactoryWPF.Pages
 {
     public partial class MachinesPage : Page
     {
-        private ConstructorReceipt ScrewReceipt;
-        private Part IronRodPart;
-        private Part ScrewPart;
+        private ConstructorMachine ScrewMachine;
+        private AssemblerMachine CircuitBoardMachine;
+        private ConstructorMachine CableMachine;
+        private ManufacturerMachine ComputerMachine;
 
-        public MachinesPage(ConstructorReceipt screwReceipt, ref Part ironRodPart, ref Part screwPart)
+        public MachinesPage(ref ConstructorMachine screwMachine,
+                            ref AssemblerMachine circuitBoardMachine,
+                            ref ConstructorMachine cableMachine,
+                            ref ManufacturerMachine computerMachine)
         {
+            ScrewMachine = screwMachine;
+            CircuitBoardMachine = circuitBoardMachine;
+            CableMachine = cableMachine;
+            ComputerMachine = computerMachine;
             InitializeComponent();
-            ScrewReceipt = screwReceipt;
-            IronRodPart = ironRodPart;
-            ScrewPart = screwPart;
         }
 
-        private async void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            ConstructorMachine machine = new ConstructorMachine(ScrewReceipt, ref IronRodPart, ref ScrewPart);
-            await machine.Cycle();
+            SPTest.Children.Clear();
+            SPTest.Children.Add(new MachineItem(ScrewMachine));
         }
     }
 }

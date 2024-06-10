@@ -22,6 +22,11 @@ namespace SmallFactoryWPF
         private ConstructorReceipt CableReceipt;
         private ManufacturerReceipt ComputerReceipt;
 
+        private ConstructorMachine ScrewMachine;
+        private AssemblerMachine CircuitBoardMachine;
+        private ConstructorMachine CableMachine;
+        private ManufacturerMachine ComputerMachine;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -31,6 +36,7 @@ namespace SmallFactoryWPF
         {
             InitializeParts();
             InitializeReceipts();
+            InitializeMachines();
 
             FShop.Navigate(new ShopPage(ref SmallFactory,
                                         ref IronRodPart,
@@ -41,7 +47,10 @@ namespace SmallFactoryWPF
                                         ref CircuitBoardPart,
                                         ref CablePart,
                                         ref ComputerPart));
-            FMachines.Navigate(new MachinesPage(ScrewReceipt, ref IronRodPart, ref ScrewPart));
+            FMachines.Navigate(new MachinesPage(ref ScrewMachine,
+                                                ref CircuitBoardMachine,
+                                                ref CableMachine,
+                                                ref ComputerMachine));
         }
 
         private void InitializeParts()
@@ -71,6 +80,14 @@ namespace SmallFactoryWPF
             CircuitBoardReceipt = new AssemblerReceipt(CopperSheetPart, PlasticPart, 8, 16, CircuitBoardPart, 25, 8);
             CableReceipt = new ConstructorReceipt(WirePart, 2, CablePart, 22.5, 2);
             ComputerReceipt = new ManufacturerReceipt(ScrewPart, CircuitBoardPart, CablePart, PlasticPart, 52, 10, 9, 18, ComputerPart, 2.5, 24);
+        }
+
+        private void InitializeMachines()
+        {
+            ScrewMachine = new ConstructorMachine(ScrewReceipt, ref IronRodPart, ref ScrewPart);
+            CircuitBoardMachine = new AssemblerMachine(CircuitBoardReceipt, ref CopperSheetPart, ref PlasticPart, ref CircuitBoardPart);
+            CableMachine = new ConstructorMachine(CableReceipt, ref WirePart, ref CablePart);
+            ComputerMachine = new ManufacturerMachine(ComputerReceipt, ref ScrewPart, ref CircuitBoardPart, ref CablePart, ref PlasticPart, ref ComputerPart);
         }
     }
 }

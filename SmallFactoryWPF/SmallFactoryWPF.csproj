@@ -55,6 +55,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Extensions\EnumExtension.cs" />
+    <Compile Include="Utils\EnumDescriptionConverter.cs" />
+    <Page Include="Controls\MachineItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ShopItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -66,6 +72,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\MachineItem.xaml.cs">
+      <DependentUpon>MachineItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ShopItem.xaml.cs">
       <DependentUpon>ShopItem.xaml</DependentUpon>
