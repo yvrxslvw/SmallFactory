@@ -1,6 +1,5 @@
 ﻿using SmallFactoryWPF.Controls;
 using SmallFactoryWPF.Models;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace SmallFactoryWPF.Pages
@@ -28,7 +27,7 @@ namespace SmallFactoryWPF.Pages
 
         private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            BTurnFactory.Content = "Включить завод";
+            BTurnFactory.Content = _isFactoryEnabled ? "Выключить завод" : "Включить завод";
             SPMachines.Children.Clear();
             SPMachines.Children.Add(new MachineItem(ScrewMachine));
             SPMachines.Children.Add(new MachineItem(CircuitBoardMachine));

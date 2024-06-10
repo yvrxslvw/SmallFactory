@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using System.Timers;
 
 namespace SmallFactoryWPF.Models
 {
@@ -12,6 +14,8 @@ namespace SmallFactoryWPF.Models
 
         public Part Input4Part;
 
+        private Timer _timer;
+
         public ManufacturerMachine(ConstructorReceipt receipt,
                                    ref Part input1Part,
                                    ref Part input2Part,
@@ -23,6 +27,16 @@ namespace SmallFactoryWPF.Models
             Input2Part = input2Part;
             Input3Part = input3Part;
             Input4Part = input4Part;
+            _timer = new Timer();
+            _timer.AutoReset = true;
+            _timer.Enabled = false;
+            _timer.Elapsed += OnTimedEvent;
+        }
+
+        private void OnTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            if (Process == 100) return;
+            Process += 1;
         }
 
         public override async Task Cycle()
@@ -82,7 +96,16 @@ namespace SmallFactoryWPF.Models
             Input2Part.StorageCount -= receipt.Material2Required;
             Input3Part.StorageCount -= receipt.Material3Required;
             Input4Part.StorageCount -= receipt.Material4Required;
-            await base.Cycle();
+
+            ErrorMessage = string.Empty;
+            Status = MachineStatus.PROCESSING;
+            _timer.Interval = (Receipt.CycleRate / 100) * 1000 - 10;
+            _timer.Enabled = true;
+            await Task.Delay((int)(Receipt.CycleRate * 1000));
+            _timer.Enabled = false;
+            OutputPart.StorageCount += (int)Math.Ceiling(Receipt.ProductionRate / (60 / Receipt.CycleRate));
+            Status = IsEnabled ? MachineStatus.WAITING : MachineStatus.TURNED_OFF;
+            Process = 0;
         }
     }
 }

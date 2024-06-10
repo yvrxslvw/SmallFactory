@@ -28,6 +28,39 @@ namespace SmallFactoryWPF.Controls
         }
         private void BBuyPart_Click(object sender, RoutedEventArgs e)
         {
+            if ((bool)CBAllParts.IsChecked)
+            {
+                if (Part.ShopCount == 0)
+                {
+                    MessageBox.Show(icon: MessageBoxImage.Error,
+                                    caption: "Ошибка",
+                                    messageBoxText: "В магазине недостаточно товара.",
+                                    button: MessageBoxButton.OK);
+                    return;
+                }
+                if (Part.StorageCount + Part.ShopCount > 400)
+                {
+                    MessageBox.Show(icon: MessageBoxImage.Error,
+                                    caption: "Ошибка",
+                                    messageBoxText: "Склад уже переполнен этой деталью.",
+                                    button: MessageBoxButton.OK);
+                    return;
+                }
+                if (Factory.Budget - Part.ShopCount * Part.Price < 0)
+                {
+                    MessageBox.Show(icon: MessageBoxImage.Error,
+                                    caption: "Ошибка",
+                                    messageBoxText: "На заводе недостаточно средств.",
+                                    button: MessageBoxButton.OK);
+                    return;
+                }
+
+                Factory.Budget -= Part.ShopCount * Part.Price;
+                Part.StorageCount += Part.ShopCount;
+                Part.ShopCount = 0;
+                return;
+            }
+
             if (Part.ShopCount - 1 < 0)
             {
                 MessageBox.Show(icon: MessageBoxImage.Error,
@@ -36,7 +69,7 @@ namespace SmallFactoryWPF.Controls
                                 button: MessageBoxButton.OK);
                 return;
             }
-            if (Part.StorageCount + 1 > 200)
+            if (Part.StorageCount + 1 > 400)
             {
                 MessageBox.Show(icon: MessageBoxImage.Error,
                                 caption: "Ошибка",
@@ -66,6 +99,14 @@ namespace SmallFactoryWPF.Controls
                                 caption: "Ошибка",
                                 messageBoxText: "На складе недостаточно этой детали.",
                                 button: MessageBoxButton.OK);
+                return;
+            }
+
+            if ((bool)CBAllParts.IsChecked)
+            {
+                Factory.Budget += (Part.Price - (Part.Price / 100 * 5)) * Part.StorageCount;
+                Part.ShopCount += Part.StorageCount;
+                Part.StorageCount = 0;
                 return;
             }
 

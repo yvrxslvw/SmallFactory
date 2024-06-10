@@ -1,7 +1,5 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Threading.Tasks;
-using System.Timers;
 
 namespace SmallFactoryWPF.Models
 {
@@ -85,8 +83,6 @@ namespace SmallFactoryWPF.Models
             }
         }
 
-        private Timer _timer;
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected Machine(Receipt receipt, ref Part outputPart)
@@ -94,34 +90,13 @@ namespace SmallFactoryWPF.Models
             Status = MachineStatus.TURNED_OFF;
             Receipt = receipt;
             OutputPart = outputPart;
-            _timer = new Timer();
-            _timer.AutoReset = true;
-            _timer.Enabled = false;
-            _timer.Elapsed += OnTimedEvent;
-        }
-
-        private void OnTimedEvent(object sender, ElapsedEventArgs e)
-        {
-            if (Process == 100) return;
-            Process += 1;
-        }
-
-        public virtual async Task Cycle()
-        {
-            ErrorMessage = string.Empty;
-            Status = MachineStatus.PROCESSING;
-            _timer.Interval = Receipt.CycleRate * 1000 / 100;
-            _timer.Enabled = true;
-            await Task.Delay((int)(Receipt.CycleRate * 1000));
-            _timer.Enabled = false;
-            OutputPart.StorageCount += (int)Math.Ceiling(Receipt.ProductionRate / (60 / Receipt.CycleRate));
-            Status = IsEnabled ? MachineStatus.WAITING : MachineStatus.TURNED_OFF;
-            Process = 0;
         }
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public virtual Task Cycle() { return Task.CompletedTask; }
     }
 }

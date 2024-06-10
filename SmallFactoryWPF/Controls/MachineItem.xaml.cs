@@ -96,5 +96,10 @@ namespace SmallFactoryWPF.Controls
             if (Machine.Status == MachineStatus.PROCESSING || !Machine.IsEnabled) return;
             await Machine.Cycle();
         }
+
+        private void BTurnMachine_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Machine.IsEnabled = !Machine.IsEnabled;
+        }
     }
 }

@@ -9,6 +9,7 @@
              Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <local:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
+        <local:BooleanToTextConverter x:Key="BooleanToTextConverter" TrueText="Выключить" FalseText="Включить"/>
     </UserControl.Resources>
     <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5" Margin="0 0 0 10">
         <Grid Margin="10">
@@ -18,8 +19,6 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <Label Name="TEMP" />
-
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -27,6 +26,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Label Grid.Column="0" Name="LMachineName" HorizontalContentAlignment="Right" FontWeight="Bold" />
+                <Button Grid.Column="0" Name="BTurnMachine" HorizontalAlignment="Left" Click="BTurnMachine_Click" Content="{Binding IsEnabled, Converter={StaticResource BooleanToTextConverter}}" />
                 <Label Grid.Column="1" HorizontalAlignment="Left" Content="{Binding Status, Converter={StaticResource EnumDescriptionConverter}}" ContentStringFormat="({0})" FontWeight="Bold" />
             </Grid>
             <Label Grid.Column="0" HorizontalAlignment="Right" Content="{Binding Process, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="{}{0}%" FontWeight="Bold" />

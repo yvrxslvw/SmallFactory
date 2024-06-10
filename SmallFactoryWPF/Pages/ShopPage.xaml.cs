@@ -41,14 +41,8 @@ namespace SmallFactoryWPF.Pages
 
         private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            RenderBalance();
             InitializeShop();
             DataContext = Factory;
-        }
-
-        private void RenderBalance()
-        {
-            string balance = Factory.Budget.ToString("N");
         }
 
         private void InitializeShop()
