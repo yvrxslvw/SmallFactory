@@ -1,4 +1,5 @@
 ﻿using SmallFactoryWPF.Models;
+using System;
 using System.Timers;
 using System.Windows.Controls;
 
@@ -7,7 +8,6 @@ namespace SmallFactoryWPF.Controls
     public partial class MachineItem : UserControl
     {
         private Machine Machine;
-
         private Timer _timer;
 
         public MachineItem(Machine machine)
@@ -38,13 +38,13 @@ namespace SmallFactoryWPF.Controls
         {
             SPMaterials.Children.Clear();
 
-            if (Machine.Receipt is ConstructorReceipt)
+            if (Machine is ConstructorMachine)
             {
                 ConstructorReceipt receipt = Machine.Receipt as ConstructorReceipt;
                 Label material1 = new Label() { Content = $"{receipt.Material1Required} {receipt.Material1.Name}" };
                 SPMaterials.Children.Add(material1);
             }
-            else if (Machine.Receipt is AssemblerReceipt)
+            else if (Machine is AssemblerMachine)
             {
                 AssemblerReceipt receipt = Machine.Receipt as AssemblerReceipt;
                 Label material1 = new Label() { Content = $"{receipt.Material1Required} {receipt.Material1.Name}" };
@@ -52,7 +52,7 @@ namespace SmallFactoryWPF.Controls
                 SPMaterials.Children.Add(material1);
                 SPMaterials.Children.Add(material2);
             }
-            else if (Machine.Receipt is ManufacturerReceipt)
+            else if (Machine is ManufacturerMachine)
             {
                 ManufacturerReceipt receipt = Machine.Receipt as ManufacturerReceipt;
                 Label material1 = new Label() { Content = $"{receipt.Material1Required} {receipt.Material1.Name}" };
@@ -78,7 +78,7 @@ namespace SmallFactoryWPF.Controls
         private void InitializeResultPart()
         {
             SPResultPart.Children.Clear();
-            int resultCount = (int)(Machine.Receipt.ProductionRate / 60 * Machine.Receipt.CycleRate);
+            int resultCount = (int)Math.Ceiling(Machine.Receipt.ProductionRate / (60 / Machine.Receipt.CycleRate));
             Label resultPart = new Label() { Content = $"{resultCount} {Machine.Receipt.ResultPart.Name}" };
             SPResultPart.Children.Add(resultPart);
         }
@@ -93,7 +93,7 @@ namespace SmallFactoryWPF.Controls
 
         private async void MakeCycle(object sender, ElapsedEventArgs e)
         {
-            if (Machine.Status == MachineStatus.PROCESSING) return;
+            if (Machine.Status == MachineStatus.PROCESSING || !Machine.IsEnabled) return;
             await Machine.Cycle();
         }
     }

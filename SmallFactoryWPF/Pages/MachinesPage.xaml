@@ -7,6 +7,14 @@
       mc:Ignorable="d"
       Loaded="Page_Loaded">
     <Grid>
-        <StackPanel Name="SPTest" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="0" Name="BTurnFactory" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20" Margin="0 0 20 0" Click="BTurnFactory_Click" />
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Name="SPMachines" />
+        </ScrollViewer>
     </Grid>
 </Page>

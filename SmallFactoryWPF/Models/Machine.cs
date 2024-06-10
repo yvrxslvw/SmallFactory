@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -6,6 +7,8 @@ namespace SmallFactoryWPF.Models
 {
     public enum MachineStatus
     {
+        [Description("Выключен")]
+        TURNED_OFF,
         [Description("Ошибка")]
         ERROR,
         [Description("Ожидание")]
@@ -65,13 +68,30 @@ namespace SmallFactoryWPF.Models
             }
         }
 
+        private bool isEnabled = false;
+
+        public bool IsEnabled
+        {
+            get { return isEnabled; }
+            set
+            {
+                if (isEnabled != value)
+                {
+                    if (Status != MachineStatus.PROCESSING) Status = value ? MachineStatus.WAITING : MachineStatus.TURNED_OFF;
+                    ErrorMessage = string.Empty;
+                    isEnabled = value;
+                    OnPropertyChanged(nameof(IsEnabled));
+                }
+            }
+        }
+
         private Timer _timer;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected Machine(Receipt receipt, ref Part outputPart)
         {
-            Status = MachineStatus.WAITING;
+            Status = MachineStatus.TURNED_OFF;
             Receipt = receipt;
             OutputPart = outputPart;
             _timer = new Timer();
@@ -94,8 +114,8 @@ namespace SmallFactoryWPF.Models
             _timer.Enabled = true;
             await Task.Delay((int)(Receipt.CycleRate * 1000));
             _timer.Enabled = false;
-            OutputPart.StorageCount += (int)(Receipt.ProductionRate / 60 * Receipt.CycleRate);
-            Status = MachineStatus.WAITING;
+            OutputPart.StorageCount += (int)Math.Ceiling(Receipt.ProductionRate / (60 / Receipt.CycleRate));
+            Status = IsEnabled ? MachineStatus.WAITING : MachineStatus.TURNED_OFF;
             Process = 0;
         }
 
