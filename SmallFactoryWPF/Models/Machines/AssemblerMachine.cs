@@ -30,6 +30,8 @@ namespace SmallFactoryWPF.Models
 
         public override async Task Cycle()
         {
+            if (Status == MachineStatus.PROCESSING) return;
+            Status = MachineStatus.PROCESSING;
             AssemblerReceipt receipt = Receipt as AssemblerReceipt;
 
             if (receipt.Material1.Name != Input1Part.Name)
@@ -61,14 +63,14 @@ namespace SmallFactoryWPF.Models
             Input2Part.StorageCount -= receipt.Material2Required;
 
             ErrorMessage = string.Empty;
-            Status = MachineStatus.PROCESSING;
             _timer.Interval = (Receipt.CycleRate / 100) * 1000 - 10;
             _timer.Enabled = true;
             await Task.Delay((int)(Receipt.CycleRate * 1000));
             _timer.Enabled = false;
-            OutputPart.StorageCount += (int)Math.Ceiling(Receipt.ProductionRate / (60 / Receipt.CycleRate));
             Status = IsEnabled ? MachineStatus.WAITING : MachineStatus.TURNED_OFF;
             Process = 0;
+
+            OutputPart.StorageCount += (int)Math.Ceiling(Receipt.ProductionRate / (60 / Receipt.CycleRate));
         }
     }
 }

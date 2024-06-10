@@ -55,14 +55,14 @@ namespace SmallFactoryWPF
 
         private void InitializeParts()
         {
-            IronRodPart = new Part("Железный Прут", 5, 1, 80);
-            CopperSheetPart = new Part("Медный Лист", 10, 1, 120);
-            WirePart = new Part("Проволока", 7, 1, 90);
-            PlasticPart = new Part("Пластик", 6, 1, 330);
-            ScrewPart = new Part("Винт", 3, 0, 0);
-            CircuitBoardPart = new Part("Печатная Плата", 18, 0, 0);
-            CablePart = new Part("Кабель", 8, 0, 0);
-            ComputerPart = new Part("Компьютер", 42, 0, 0);
+            IronRodPart = new Part("Железный Прут", 2, 1, 80);
+            CopperSheetPart = new Part("Медный Лист", 2, 1, 120);
+            WirePart = new Part("Проволока", 2, 1, 90);
+            PlasticPart = new Part("Пластик", 1, 1, 330);
+            ScrewPart = new Part("Винт", 1, 0, 0);
+            CircuitBoardPart = new Part("Печатная Плата", 11, 0, 0);
+            CablePart = new Part("Кабель", 7, 0, 0);
+            ComputerPart = new Part("Компьютер", 200, 0, 0);
 
             IronRodPart.Replenishment();
             CopperSheetPart.Replenishment();
